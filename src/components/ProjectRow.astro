@@ -1,0 +1,217 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+  index: number;
+  /** Baris ganjil: gambar pindah ke kanan, teks ke kiri */
+  mirrored?: boolean;
+  /** Sisi gelap gradien — diletakkan di balik teks agar tetap terbaca */
+  fadeFrom?: "left" | "right";
+  /** URL gambar ukuran besar untuk lightbox */
+  fullSrc: string;
+  fullSecondarySrc?: string;
+}
+
+const {
+  project,
+  index,
+  mirrored = false,
+  fadeFrom = "right",
+  fullSrc,
+  fullSecondarySrc,
+} = Astro.props;
+
+const number = String(index).padStart(2, "0");
+const secondaryLeftAligned = mirrored;
+---
+
+<article
+  class="relative flex flex-col gap-8 md:flex-row md:items-center md:gap-12 -mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop py-12 md:py-16"
+>
+  <!-- Gradien horizontal per project (desktop). Di mobile gradien dipegang section agar menyatu -->
+  <div
+    aria-hidden="true"
+    class:list={[
+      "pointer-events-none absolute inset-0 hidden md:block",
+      fadeFrom === "left" ? "fade-from-left" : "fade-from-right",
+    ]}
+  >
+  </div>
+
+  <!-- ===== Screenshot ===== -->
+  <div
+    class:list={[
+      "relative z-10 shrink-0 md:w-[57%]",
+      project.secondaryImage && "md:pb-10",
+      mirrored ? "md:order-last" : "",
+    ]}
+  >
+    <button
+      type="button"
+      data-lightbox-src={fullSrc}
+      data-lightbox-alt={project.imageAlt}
+      data-lightbox-title={project.title}
+      data-lightbox-meta={`${project.domain} — ${project.year}`}
+      class:list={[
+        "group relative z-10 block w-full cursor-zoom-in bg-surface text-left brutal-border shadow-[6px_6px_0_0_#ffffff] transition-neobrutal hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary",
+        mirrored ? "-rotate-1" : "rotate-1",
+      ]}
+      aria-label={`Perbesar screenshot ${project.title}`}
+    >
+      <!-- Frame browser palsu — menyatukan semua screenshot -->
+      {
+        !project.hasOwnBrowserChrome && (
+          <div class="flex items-center gap-2 border-b-[3px] border-outline bg-surface px-3 py-2">
+            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-error-container" />
+            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-tertiary-fixed-dim" />
+            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-primary" />
+            <span class="ml-2 truncate font-label-mono text-[11px] font-bold uppercase text-on-surface-variant">
+              {project.domain}
+            </span>
+          </div>
+        )
+      }
+      <div class="relative overflow-hidden bg-surface-container-high">
+        <Image
+          src={project.image}
+          alt={project.imageAlt}
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 768px) 55vw, 100vw"
+          format="webp"
+          loading="lazy"
+          decoding="async"
+          class="block h-auto w-full"
+        />
+        <!-- <span
+          class="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1 border-[3px] border-outline bg-surface px-2 py-1 font-label-mono text-[11px] font-bold uppercase text-on-surface"
+        >
+          <span class="material-symbols-outlined text-[16px]" aria-hidden="true"
+            >zoom_in</span
+          >
+          Zoomm
+        </span> -->
+      </div>
+    </button>
+
+    <!-- Screenshot kedua (mis. Koki Akhir Bulan: landing + chatbot) -->
+    {
+      project.secondaryImage && fullSecondarySrc && (
+        <div
+          class:list={[
+            "relative z-20 mt-6 md:absolute md:-bottom-2 md:w-[54%]",
+            secondaryLeftAligned ? "md:-left-8" : "md:-right-8",
+            secondaryLeftAligned ? "md:rotate-2" : "md:-rotate-2",
+          ]}
+        >
+          <button
+            type="button"
+            data-lightbox-src={fullSecondarySrc}
+            data-lightbox-alt={project.secondaryImageAlt ?? project.imageAlt}
+            data-lightbox-title={`${project.title} — Detail`}
+            data-lightbox-meta={`${project.domain} — ${project.year}`}
+            class="group block w-full cursor-zoom-in bg-surface text-left brutal-border shadow-[6px_6px_0_0_#ffffff] transition-neobrutal hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary"
+            aria-label={`Perbesar screenshot detail ${project.title}`}
+          >
+            <div class="relative overflow-hidden bg-surface-container-high">
+              <Image
+                src={project.secondaryImage}
+                alt={project.secondaryImageAlt ?? ""}
+                widths={[320, 480, 720]}
+                sizes="(min-width: 768px) 30vw, 100vw"
+                format="webp"
+                loading="lazy"
+                decoding="async"
+                class="block h-auto w-full"
+              />
+              {/* <span class="pointer-events-none absolute bottom-2 right-2 flex items-center justify-center border-[3px] border-outline bg-surface p-1 text-on-surface">
+                <span
+                  class="material-symbols-outlined text-[16px]"
+                  aria-hidden="true"
+                >
+                  zoom_in
+                </span>
+              </span> */}
+            </div>
+          </button>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- ===== Teks ===== -->
+  <div class="relative z-10 flex flex-1 flex-col gap-5">
+    <div class="flex flex-wrap items-center gap-3">
+      <!-- <span
+        class="font-label-mono text-[13px] font-black uppercase bg-surface text-on-surface px-2 py-1 -rotate-3 shadow-[4px_4px_0_0_#ffffff] border-[3px] border-outline"
+      >
+        &lt;{number}&gt;
+      </span> -->
+      <span
+        class="font-label-mono text-[11px] font-bold uppercase border-[3px] border-white text-surface px-2 py-0.5"
+      >
+        {project.year}
+      </span>
+    </div>
+
+    <h3
+      class="text-[34px] md:text-[44px] font-black uppercase leading-[0.95] text-surface"
+    >
+      {project.title}
+    </h3>
+
+    <p class="text-body-md text-surface/70 max-w-prose">
+      {project.description}
+    </p>
+
+    <div class="flex flex-wrap gap-2">
+      {
+        project.tags.map((tag) => (
+          <span class="bg-surface text-on-surface border-[3px] border-outline px-2 py-1 font-label-mono text-[11px] font-bold uppercase">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="flex flex-wrap gap-4 pt-2">
+      <!-- {
+        project.demo && (
+          <a
+            href={project.demo}
+            target={project.demo === "#" ? undefined : "_blank"}
+            rel="noreferrer"
+            class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary border-[3px] border-outline px-6 py-3 font-label-mono text-label-mono font-bold uppercase transition-neobrutal hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff]"
+          >
+            <span
+              class="material-symbols-outlined text-[18px]"
+              aria-hidden="true"
+            >
+              visibility
+            </span>
+            Live
+          </a>
+        )
+      } -->
+      {
+        project.repo && (
+          <a
+            href={project.repo}
+            target={project.repo === "#" ? undefined : "_blank"}
+            rel="noreferrer"
+            class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary border-[3px] border-outline px-6 py-3 font-label-mono text-label-mono font-bold uppercase transition-neobrutal hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff]"
+          >
+            <span
+              class="material-symbols-outlined text-[18px]"
+              aria-hidden="true"
+            >
+              code
+            </span>
+            Code
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

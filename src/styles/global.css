@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@theme {
+  /* ==== Color tokens (from code.html) ==== */
+  --color-background: #EFEDE4;
+  --color-primary: #7448f9;
+  --color-primary-container: #2b4eff;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-variant: #ffffff;
+  --color-surface-container: #f8faff;
+  --color-surface-container-high: #f0f0f0;
+  --color-outline: #000000;
+  --color-on-surface: #000000;
+  --color-on-surface-variant: #333333;
+  --color-secondary-container: #e0e0e0;
+  --color-on-secondary-container: #000000;
+  --color-tertiary-fixed-dim: #cccccc;
+  --color-error-container: #ff4444;
+
+  /* ==== Spacing ==== */
+  --spacing-margin-desktop: 200px;
+  --spacing-margin-mobile: 20px;
+  --spacing-gutter: 24px;
+  --spacing-shadow-offset: 6px;
+  --spacing-shadow-offset-active: 2px;
+
+  /* ==== Radius ==== */
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* ==== Typography ==== */
+  --font-headline: "Sora", sans-serif;
+  --font-display: "Sora", sans-serif;
+  --font-body: "Sora", sans-serif;
+  --font-label: "Sora", sans-serif;
+  --font-label-mono: "IBM Plex Mono", monospace;
+
+  --text-hero-title-mobile: 40px;
+  --text-hero-title-mobile--line-height: 1.1;
+  --text-hero-title-mobile--font-weight: 900;
+  --text-hero-title: 64px;
+  --text-hero-title--line-height: 1.1;
+  --text-hero-title--font-weight: 900;
+  --text-body-md: 17px;
+  --text-body-md--line-height: 1.6;
+  --text-body-md--font-weight: 500;
+  --text-section-title: 36px;
+  --text-section-title--line-height: 1.2;
+  --text-section-title--font-weight: 900;
+  --text-label-mono: 13px;
+  --text-label-mono--line-height: 1;
+  --text-label-mono--letter-spacing: 0.1em;
+  --text-label-mono--font-weight: 600;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    font-family: var(--font-headline);
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ==== Neobrutal utility classes ==== */
+@utility brutal-border {
+  border: 3px solid var(--color-outline);
+}
+
+@utility brutal-shadow {
+  box-shadow: 6px 6px 0 0 var(--color-outline);
+}
+
+@utility brutal-shadow-sm {
+  box-shadow: 4px 4px 0 0 var(--color-outline);
+}
+
+@utility brutal-shadow-active {
+  &:active {
+    box-shadow: 2px 2px 0 0 var(--color-outline);
+    transform: translate(4px, 4px);
+  }
+}
+
+@utility brutal-hover {
+
+  &:hover,
+  &:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 0 var(--color-outline);
+  }
+}
+
+@utility transition-neobrutal {
+  transition: all 120ms linear;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(var(--color-outline) 2px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* ==== Section background patterns ====
+   Aturan pakai:
+   - Base  : cream (--color-background) / putih (--color-surface)
+   - Accent: ungu (About, Portfolio) / hitam (Footer) — jangan bersebelahan
+   - Pattern: hanya di atas Base, kontras rendah, maks 1 per 2 section
+   ------------------------------------------------------------------ */
+
+/* Garis blueprint tipis — dipakai di Hero */
+@utility blueprint-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-outline) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-outline) 7%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 32px 32px;
+}
+
+/* Dot grid versi tipis — untuk section yang isinya sudah padat (Certifications) */
+@utility dot-grid-faint {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-outline) 14%, transparent) 2px,
+    transparent 1.5px
+  );
+  background-size: 24px 24px;
+}
+
+/* Checker diagonal ungu — latar section About */
+@utility checker-purple {
+  background-image:
+    linear-gradient(
+      45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%
+    ),
+    linear-gradient(
+      45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%
+    );
+  background-position: 0 0, 10.5px 10.5px;
+  background-size: 21px 21px;
+}
+
+/* Checker ungu + gradien hitam dari bawah (lantai gelap, checker tetap terlihat di atas) */
+@utility checker-purple-fade {
+  background-image:
+    linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.92) 0%,
+      rgb(0 0 0 / 0.62) 22%,
+      rgb(0 0 0 / 0.22) 48%,
+      transparent 72%
+    ),
+    linear-gradient(
+      45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%
+    ),
+    linear-gradient(
+      45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%
+    );
+  background-position: bottom, 0 0, 10.5px 10.5px;
+  background-size: 100% 100%, 21px 21px, 21px 21px;
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+/* ==== Gradien gelap untuk baris project (Portfolio) ====
+   Sisi gelap diletakkan di balik teks supaya teks putih tetap terbaca.
+   Hitam dibuat dominan di seluruh lebar, checker hanya tersisa samar di ujung. */
+@utility fade-from-right {
+  background-image: linear-gradient(
+    to left,
+    rgb(0 0 0 / 0.96) 0%,
+    rgb(0 0 0 / 0.9) 35%,
+    rgb(0 0 0 / 0.74) 70%,
+    rgb(0 0 0 / 0.5) 100%
+  );
+}
+
+@utility fade-from-left {
+  background-image: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.96) 0%,
+    rgb(0 0 0 / 0.9) 35%,
+    rgb(0 0 0 / 0.74) 70%,
+    rgb(0 0 0 / 0.5) 100%
+  );
+}
+
+@utility fade-from-bottom {
+  background-image: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.96) 0%,
+    rgb(0 0 0 / 0.9) 35%,
+    rgb(0 0 0 / 0.74) 70%,
+    rgb(0 0 0 / 0.5) 100%
+  );
+}
+
+/* Garis diagonal halus — alternatif checker yang lebih tenang */
+@utility diagonal-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--color-primary) 12%, transparent) 0 12px,
+    transparent 12px 24px
+  );
+}

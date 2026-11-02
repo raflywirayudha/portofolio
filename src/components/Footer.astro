@@ -1,0 +1,36 @@
+---
+const socials = [
+  { label: "Github", href: "https://github.com/raflywirayudha" },
+  {
+    label: "Linkedin",
+    href: "https://www.linkedin.com/in/muhammadraflywirayudha/",
+  },
+  { label: "Instagram", href: "https://www.instagram.com/raflywirayudhaa/" },
+];
+---
+
+<footer
+  id="contact"
+  class="w-full bg-black border-t-[3px] border-outline py-7 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center mx-auto gap-8 brutal-shadow relative z-10"
+>
+  <div class="text-[24px] font-black text-white tracking-tight">&lt;rf&gt;</div>
+  <div
+    class="font-label-mono text-label-mono text-gray-400 text-center md:text-left"
+  >
+    © {new Date().getFullYear()} MUHAMMAD_RAFLY_WIRAYUDHA.
+  </div>
+  <div class="flex gap-4 items-center">
+    {
+      socials.map((social) => (
+        <a
+          href={social.href}
+          target="_blank"
+          rel="noreferrer"
+          class="bg-surface text-on-surface border-[3px] border-white -rotate-3 shadow-[4px_4px_0px_0px_#ffffff] px-4 py-2 font-label-mono text-label-mono uppercase font-bold hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all duration-120"
+        >
+          {social.label}
+        </a>
+      ))
+    }
+  </div>
+</footer>

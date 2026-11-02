@@ -1,0 +1,78 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { education } from "../data/education";
+---
+
+<section
+  id="education"
+  class="w-full flex flex-col gap-8 border-t-[3px] border-outline py-10 px-margin-mobile md:px-margin-desktop bg-background"
+>
+  <SectionHeader label="education" title="Education" />
+  <div class="relative ml-4 md:ml-12 flex flex-col gap-12 py-8">
+    <div
+      class="absolute left-0 top-0 bottom-0 w-[3px] bg-outline"
+      aria-hidden="true"
+    >
+    </div>
+    {
+      education.map((item) => (
+        <div class="relative pl-8">
+          <div
+            class:list={[
+              "absolute -left-[10px] top-2 w-5 h-5 rounded-full border-[3px] border-outline z-10",
+              item.featured ? "bg-primary" : "bg-surface",
+            ]}
+            aria-hidden="true"
+          />
+          <div class="flex flex-col gap-1">
+            <span
+              class:list={[
+                "font-label-mono text-label-mono px-2 py-0.5 brutal-border self-start font-bold mb-2",
+                item.featured
+                  ? "bg-primary text-on-primary"
+                  : "bg-surface text-on-surface",
+              ]}
+            >
+              {item.period}
+            </span>
+            <h3 class="text-[24px] font-black uppercase text-on-surface leading-tight">
+              {item.school}
+            </h3>
+            <p class="font-label-mono text-[14px] uppercase text-on-surface-variant font-bold">
+              {item.major}
+            </p>
+            {item.description && (
+              <p class="font-label-mono text-[12px] uppercase text-on-surface-variant">
+                {item.description}
+              </p>
+            )}
+            {item.highlights && (
+              <ul class="mt-2 flex max-w-[70ch] flex-col gap-3">
+                {item.highlights.map((highlight) => (
+                  <li class="flex gap-2.5">
+                    <span
+                      class="mt-[7px] h-2.5 w-2.5 shrink-0 border-[3px] border-outline bg-primary"
+                      aria-hidden="true"
+                    />
+                    <p class="text-body-md leading-relaxed text-on-surface-variant">
+                      <span class="font-label-mono text-body-md font-bold uppercase tracking-wide text-on-surface">
+                        {highlight.label}
+                      </span>
+                      <span
+                        class="mr-1.5 text-on-surface-variant"
+                        aria-hidden="true"
+                      >
+                        —
+                      </span>
+                      {highlight.text}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

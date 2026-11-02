@@ -1,0 +1,33 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  /** Untuk section dengan background gelap (mis. Portfolio hitam) */
+  inverted?: boolean;
+}
+
+const { label, title, inverted = false } = Astro.props;
+---
+
+<div class="flex items-center gap-4 justify-center pt-8 mb-4">
+  <!-- <div
+    class="font-label-mono text-label-mono bg-on-surface text-surface px-3 py-1 brutal-border"
+  >
+    &lt;{label}&gt;
+  </div> -->
+  <div
+    class:list={[
+      'font-label-mono text-section-title px-3 py-1 -rotate-6',
+      inverted
+        ? 'bg-surface text-on-surface shadow-[6px_6px_0_0_#ffffff]'
+        : 'bg-on-surface text-surface brutal-shadow',
+    ]}
+  >
+    &lt;{label}&gt;
+  </div>
+  <!-- <h2
+    class="text-section-title uppercase font-black tracking-tight text-on-surface"
+  >
+    {title}
+  </h2> -->
+</div>

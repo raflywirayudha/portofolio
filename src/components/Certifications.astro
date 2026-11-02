@@ -1,0 +1,367 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { certifications } from "../data/certifications";
+
+const byDateDesc = [...certifications].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
+const featured = byDateDesc.filter((cert) => cert.featured);
+const archive = byDateDesc.filter((cert) => !cert.featured);
+
+const pad = (value: number) => String(value).padStart(2, "0");
+---
+
+<section
+  id="certifications"
+  class="w-full flex flex-col gap-8 border-t-[3px] border-outline py-10 px-margin-mobile md:px-margin-desktop bg-background dot-grid-faint"
+>
+  <SectionHeader label="certifications" title="Certifications" />
+
+  <!-- ==== Sorotan: marquee kanan → kiri ==== -->
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center justify-between gap-4">
+      <button
+        type="button"
+        id="cert-marquee-toggle"
+        aria-pressed="false"
+        aria-controls="cert-marquee"
+        class="cert-marquee-toggle shrink-0 flex items-center gap-1 font-label-mono text-[10px] font-bold uppercase bg-surface px-3 py-1.5 brutal-border brutal-shadow-sm brutal-hover transition-neobrutal cursor-pointer"
+      >
+        <span
+          class="material-symbols-outlined text-[16px]"
+          aria-hidden="true"
+          data-cert-marquee-icon
+        >
+          pause
+        </span>
+        <span data-cert-marquee-label>jeda</span>
+      </button>
+    </div>
+
+    <div
+      id="cert-marquee"
+      data-cert-marquee
+      role="region"
+      aria-label="Sertifikat unggulan"
+      class="cert-marquee relative -mx-margin-mobile md:-mx-margin-desktop border-y-[3px] border-outline bg-surface-container py-6"
+    >
+      <div class="cert-viewport">
+        <div class="cert-track">
+          {
+            [0, 1].map((clone) => (
+              <div
+                class="cert-group flex shrink-0 gap-6 pr-6"
+                aria-hidden={clone === 1 ? "true" : undefined}
+                data-cert-clone={clone === 1 ? "" : undefined}
+              >
+                {featured.map((cert) => (
+                  <button
+                    type="button"
+                    data-cert-image={cert.image}
+                    data-cert-alt={cert.imageAlt}
+                    data-cert-title={cert.title}
+                    data-cert-issuer={cert.issuer}
+                    data-cert-date={cert.date}
+                    tabindex={clone === 1 ? -1 : undefined}
+                    aria-label={`Lihat sertifikat ${cert.title} dari ${cert.issuer}`}
+                    class="cert-slide group/slide w-[260px] sm:w-[300px] md:w-[340px] shrink-0 text-left bg-surface brutal-border brutal-shadow transition-neobrutal hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary cursor-pointer"
+                  >
+                    <div class="relative aspect-[4/3] overflow-hidden border-b-[3px] border-outline bg-surface-container-high">
+                      <img
+                        src={cert.image}
+                        alt={cert.imageAlt}
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false"
+                        class="h-full w-full object-cover transition-transform duration-300 group-hover/slide:scale-[1.03]"
+                      />
+                    </div>
+                    <div class="flex flex-col gap-1.5 px-3 py-2.5">
+                      {/* <h3 class="font-black text-[13px] uppercase leading-tight line-clamp-1">
+                        {cert.title}
+                      </h3> */}
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="min-w-0 truncate font-label-mono text-[9px] font-bold uppercase tracking-wider text-on-surface-variant">
+                          {cert.issuer}
+                        </span>
+                        <span class="shrink-0 font-label-mono text-[10px] font-bold">
+                          {cert.date}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==== Arsip: daftar baris ==== -->
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center gap-3">
+      <span
+        class="font-label-mono text-[11px] font-bold uppercase px-2 py-1 brutal-border bg-on-surface text-surface"
+      >
+        Lainnya
+      </span>
+      <span class="h-[3px] flex-1 bg-outline" aria-hidden="true"></span>
+    </div>
+
+    <div class="flex flex-col brutal-border bg-surface">
+      {
+        archive.map((cert, index) => (
+          <button
+            type="button"
+            data-cert-image={cert.image}
+            data-cert-alt={cert.imageAlt}
+            data-cert-title={cert.title}
+            data-cert-issuer={cert.issuer}
+            data-cert-date={cert.date}
+            aria-label={`Lihat sertifikat ${cert.title} dari ${cert.issuer}`}
+            class="cert-row group/row flex w-full flex-wrap items-center gap-x-3 gap-y-1.5 border-b-[3px] border-outline px-4 py-4 text-left transition-neobrutal last:border-b-0 hover:bg-primary hover:text-on-primary focus:outline-none focus-visible:bg-primary focus-visible:text-on-primary cursor-pointer"
+          >
+            <span class="font-label-mono text-[11px] font-bold text-on-surface-variant group-hover/row:text-on-primary/70 w-5 shrink-0">
+              {pad(index + 7)}
+            </span>
+            <span class="max-w-[48%] shrink-0 truncate font-label-mono text-[10px] font-bold uppercase bg-surface text-on-surface px-2 py-1 brutal-border md:max-w-none md:w-44 md:text-center">
+              {cert.issuer}
+            </span>
+            <h3 class="order-last w-full text-[14px] font-black uppercase leading-tight md:order-none md:w-auto md:flex-1 md:truncate">
+              {cert.title}
+            </h3>
+            <span class="ml-auto shrink-0 font-label-mono text-[11px] font-bold md:ml-0">
+              {cert.date}
+            </span>
+            <span
+              class="material-symbols-outlined hidden shrink-0 text-[18px] transition-neobrutal group-hover/row:translate-x-1 md:block"
+              aria-hidden="true"
+            >
+              arrow_forward
+            </span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<dialog
+  id="cert-dialog"
+  aria-labelledby="cert-dialog-title"
+  class="w-[min(92vw,56rem)] max-w-none max-h-[92vh] p-0 m-auto bg-surface brutal-border brutal-shadow text-on-surface backdrop:bg-black/70"
+>
+  <div class="flex flex-col max-h-[92vh]">
+    <div
+      class="flex items-start justify-between gap-4 border-b-[3px] border-outline bg-background px-5 py-3"
+    >
+      <div class="flex flex-col gap-1 min-w-0">
+        <span
+          id="cert-dialog-issuer"
+          class="font-label-mono text-[11px] font-bold uppercase text-on-surface-variant"
+        ></span>
+        <h3
+          id="cert-dialog-title"
+          class="text-[18px] md:text-[22px] font-black uppercase leading-tight"
+        >
+        </h3>
+      </div>
+      <button
+        type="button"
+        id="cert-dialog-close"
+        class="shrink-0 bg-surface brutal-border brutal-shadow-sm brutal-hover transition-neobrutal px-3 py-1 font-label-mono text-[11px] font-bold uppercase cursor-pointer"
+      >
+        Tutup
+      </button>
+    </div>
+
+    <div class="overflow-auto bg-surface-container-high p-4">
+      <img
+        id="cert-dialog-image"
+        alt=""
+        decoding="async"
+        class="w-full max-h-[62vh] object-contain bg-surface brutal-border"
+      />
+    </div>
+
+    <div
+      class="flex items-center justify-between gap-3 border-t-[3px] border-outline bg-background px-5 py-3"
+    >
+      <span
+        id="cert-dialog-date"
+        class="font-label-mono text-[11px] font-bold px-2 py-1 brutal-border bg-surface"
+      ></span>
+      <span
+        class="font-label-mono text-[11px] uppercase text-on-surface-variant"
+      >
+        verified credential
+      </span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById(
+    "cert-dialog",
+  ) as HTMLDialogElement | null;
+  const dialogImage = document.getElementById(
+    "cert-dialog-image",
+  ) as HTMLImageElement | null;
+  const dialogTitle = document.getElementById("cert-dialog-title");
+  const dialogIssuer = document.getElementById("cert-dialog-issuer");
+  const dialogDate = document.getElementById("cert-dialog-date");
+  const closeButton = document.getElementById("cert-dialog-close");
+
+  if (dialog && dialogImage && dialogTitle && dialogIssuer && dialogDate) {
+    const cards =
+      document.querySelectorAll<HTMLButtonElement>("[data-cert-image]");
+
+    const openDialog = (card: HTMLButtonElement) => {
+      const { certImage, certAlt, certTitle, certIssuer, certDate } =
+        card.dataset;
+
+      dialogImage.src = certImage ?? "";
+      dialogImage.alt = certAlt ?? "";
+      dialogTitle.textContent = certTitle ?? "";
+      dialogIssuer.textContent = certIssuer ?? "";
+      dialogDate.textContent = certDate ?? "";
+
+      dialog.showModal();
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => openDialog(card));
+    });
+
+    closeButton?.addEventListener("click", () => dialog.close());
+
+    // Tutup saat klik area gelap di luar panel (native <dialog> menganggapnya target dialog)
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+
+      const rect = dialog.getBoundingClientRect();
+      const isInsidePanel =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (!isInsidePanel) dialog.close();
+    });
+  }
+
+  // ==== Kontrol jeda marquee ====
+  const marquee = document.querySelector<HTMLElement>("[data-cert-marquee]");
+  const marqueeToggle = document.getElementById("cert-marquee-toggle");
+  const marqueeLabel = document.querySelector<HTMLElement>(
+    "[data-cert-marquee-label]",
+  );
+  const marqueeIcon = document.querySelector<HTMLElement>(
+    "[data-cert-marquee-icon]",
+  );
+
+  if (marquee && marqueeToggle) {
+    marqueeToggle.addEventListener("click", () => {
+      const isPaused = marquee.classList.toggle("is-paused");
+
+      marqueeToggle.setAttribute("aria-pressed", String(isPaused));
+
+      if (marqueeLabel) marqueeLabel.textContent = isPaused ? "jalan" : "jeda";
+      if (marqueeIcon)
+        marqueeIcon.textContent = isPaused ? "play_arrow" : "pause";
+    });
+  }
+</script>
+
+<style>
+  .cert-viewport {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 2.5rem,
+      #000 calc(100% - 2.5rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 2.5rem,
+      #000 calc(100% - 2.5rem),
+      transparent 100%
+    );
+  }
+
+  .cert-track {
+    --cert-marquee-duration: 34s;
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: cert-marquee-scroll var(--cert-marquee-duration) linear infinite;
+  }
+
+  /* Berhenti saat disentuh, difokus keyboard, dijeda manual, atau saat lightbox terbuka */
+  .cert-marquee:hover .cert-track,
+  .cert-marquee:focus-within .cert-track,
+  .cert-marquee.is-paused .cert-track,
+  body:has(dialog[open]) .cert-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes cert-marquee-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .cert-viewport {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 5rem,
+        #000 calc(100% - 5rem),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 5rem,
+        #000 calc(100% - 5rem),
+        transparent 100%
+      );
+    }
+
+    .cert-track {
+      --cert-marquee-duration: 44s;
+    }
+  }
+
+  /* Tanpa animasi: jadi carousel geser manual, salinan duplikat disembunyikan */
+  @media (prefers-reduced-motion: reduce) {
+    .cert-track {
+      animation: none;
+    }
+
+    .cert-viewport {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .cert-group[data-cert-clone],
+    .cert-marquee-toggle {
+      display: none;
+    }
+
+    .cert-slide {
+      scroll-snap-align: start;
+    }
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+  /** Untuk section dengan background gelap — shadow dibalik jadi putih */
+  inverted?: boolean;
+}
+
+const { project, inverted = false } = Astro.props;
+---
+
+<article
+  class:list={[
+    "bg-surface brutal-border flex flex-col transition-neobrutal hover:-translate-y-2",
+    inverted ? "shadow-[6px_6px_0_0_#ffffff]" : "brutal-shadow",
+  ]}
+>
+  <div
+    class="aspect-video w-full border-b-[3px] border-outline bg-surface-container-high overflow-hidden relative"
+  >
+    <img
+      class="w-full h-full object-cover grayscale contrast-125 mix-blend-multiply hover:grayscale-0 transition-all duration-300"
+      src={project.image}
+      alt={project.imageAlt}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="h-3 bg-primary w-full border-b-[3px] border-outline"></div>
+  <div class="p-6 flex flex-col gap-4 flex-grow">
+    <h3 class="text-[28px] font-black uppercase leading-none text-on-surface">
+      {project.title}
+    </h3>
+    <p class="text-body-md text-on-surface-variant flex-grow">
+      {project.description}
+    </p>
+    <div class="flex flex-wrap gap-2 mt-2 -mb-8">
+      {
+        project.tags.map((tag) => (
+          <span class="bg-surface border-[3px] border-outline px-2 py-1 font-label-mono text-[11px] uppercase text-on-surface font-bold">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <div class="flex relative top-6 px-5 gap-5">
+    <a
+      href={project.demo ?? "#"}
+      target={project.demo && project.demo !== "#" ? "_blank" : undefined}
+      rel="noreferrer"
+      class="flex-1 bg-surface text-on-surface -rotate-3 brutal-border brutal-shadow text-center px-10 py-2 font-label-mono text-label-mono uppercase font-bold border-outline hover:bg-primary hover:text-on-primary transition-neobrutal flex justify-center items-center gap-2"
+    >
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true"
+        >visibility</span
+      >
+      DEMO
+    </a>
+    <a
+      href={project.repo ?? "#"}
+      target={project.repo && project.repo !== "#" ? "_blank" : undefined}
+      rel="noreferrer"
+      class="flex-1 bg-surface text-on-surface -rotate-3 brutal-border brutal-shadow text-center px-10 py-2 font-label-mono text-label-mono uppercase font-bold border-outline hover:bg-primary hover:text-on-primary transition-neobrutal flex justify-center items-center gap-2"
+    >
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true"
+        >code</span
+      >
+      REPO
+    </a>
+  </div>
+</article>

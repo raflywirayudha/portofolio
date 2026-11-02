@@ -1,0 +1,69 @@
+---
+import MobileMenu from "./MobileMenu";
+import { navLinks } from "../data/nav";
+
+const ctaLabel = "Hire Me";
+---
+
+<nav
+  class="flex justify-between items-center py-4 px-margin-mobile md:px-margin-desktop w-full sticky top-0 z-50 bg-surface border-b-[3px] border-outline brutal-shadow"
+  aria-label="Navigasi utama"
+>
+  <a
+    class="font-headline text-[24px] font-black text-on-surface tracking-tight transition-neobrutal hover:translate-x-[2px] hover:translate-y-[2px]"
+    href="#hero"
+  >
+    &lt;rf&gt;
+  </a>
+  <div
+    class="hidden md:flex gap-8 items-center font-label-mono text-label-mono uppercase"
+  >
+    {
+      navLinks.map((link) => (
+        <a
+          class:list={[
+            "transition-neobrutal",
+            link.active
+              ? "text-primary underline decoration-[3px] underline-offset-4 font-bold"
+              : "text-on-surface hover:text-primary hover:-translate-y-1",
+          ]}
+          href={link.href}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+  <div class="hidden md:block">
+    <a
+      href="#contact"
+      class="inline-block bg-surface text-on-surface -rotate-3 brutal-border brutal-shadow transition-neobrutal brutal-hover px-6 py-2 font-label-mono text-label-mono uppercase font-bold"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+  <MobileMenu client:idle links={navLinks} ctaLabel={ctaLabel} />
+</nav>
+
+<script>
+  const nav = document.getElementById("main-nav");
+  if (nav) {
+    const HIDE_THRESHOLD = 80;
+    let lastY = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+
+      if (y <= HIDE_THRESHOLD || delta < 0) {
+        nav.classList.remove("-translate-y-full");
+      } else if (delta > 0) {
+        nav.classList.add("-translate-y-full");
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+</script>

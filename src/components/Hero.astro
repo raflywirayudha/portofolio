@@ -1,0 +1,92 @@
+---
+const name = "Muhammad Rafly Wirayudha";
+const role = "Informatics Engineering";
+const photo = "/profil.png";
+---
+
+<section
+  id="hero"
+  class="w-full h-[91dvh] py-10 px-margin-mobile md:px-margin-desktop flex flex-col justify-center gap-6 relative bg-background blueprint-grid"
+>
+  <h1
+    class="text-hero-title-mobile md:text-hero-title font-black uppercase max-w-4xl leading-tight text-on-surface relative z-20"
+  >
+    {name}
+    <br />
+    <span
+      class="bg-primary text-5xl text-on-primary px-4 py-1 inline-block -rotate-1 brutal-border brutal-shadow mt-2"
+    >
+      {role}
+    </span>
+  </h1>
+
+  <div class="flex flex-col sm:flex-row gap-6 mt-8 relative z-20">
+    <a
+      href="#portfolio"
+      class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+    >
+      LIHAT PROYEK
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
+        arrow_forward
+      </span>
+    </a>
+    <a
+      href="/cv_muhammad-rafly-wirayudha.pdf"
+      download="cv_muhammad-rafly-wirayudha.pdf"
+      class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+    >
+      DOWNLOAD CV
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
+        download
+      </span>
+    </a>
+  </div>
+
+  <!-- Photo Card Container -->
+  <div
+    class="hidden lg:block absolute right-40 top-40 w-[420px] h-[520px] z-10 translate-x-4 -translate-y-12 rotate-2"
+  >
+    <!-- Decorative Circle -->
+    <div
+      class="hidden lg:block absolute right-[340px] top-[-40px] w-32 h-32 rounded-full bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      aria-hidden="true"
+    >
+    </div>
+
+    <!-- Decorative Square -->
+    <div
+      class="hidden lg:block absolute left-[370px] top-[150px] w-26 h-26 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      aria-hidden="true"
+    >
+    </div>
+
+    <!-- Decorative Triangle -->
+    <div
+      class="absolute -left-12 bottom-12 w-24 h-16 bg-primary border-[3px] rounded-2xl border-outline brutal-shadow z-30 -rotate-20"
+      aria-hidden="true"
+    >
+    </div>
+    <!-- Main Card -->
+    <div
+      class="w-full h-full bg-surface brutal-border brutal-shadow dot-grid relative overflow-hidden flex items-center justify-center rounded-se-4xl rounded-es-4xl"
+    >
+      <picture>
+        <source srcset="/profil.webp" type="image/webp" />
+        <img
+          alt={name}
+          src={photo}
+          width="420"
+          height="520"
+          fetchpriority="high"
+          class="w-full h-full object-cover contrast-125 grayscale hover:grayscale-0 transition-all duration-300 relative z-10"
+        />
+      </picture>
+    </div>
+    <!-- Decorative Rectangle -->
+    <div
+      class="absolute -right-8 -bottom-4 w-48 h-12 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-3"
+      aria-hidden="true"
+    >
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+const aboutParagraphs = [
+  "Halo! Saya **Muhammad Rafly Wirayudha**. Sebagai seorang fresh graduate **Teknik Informatika** dari **UIN Sultan Syarif Kasim Riau** (**IPK 3.70**), saya memiliki ketertarikan yang mendalam terhadap dunia teknologi, khususnya pada keamanan digital. Saat ini saya berdomisili di **Tembilahan, Indragiri Hilir, Riau**.",
+  "Sebelum memfokuskan diri pada keamanan siber, saya memiliki pengalaman merancang antarmuka sebagai seorang **Frontend Web Developer**. Pengalaman tersebut memberikan saya fondasi yang kuat tentang bagaimana sebuah aplikasi web dibangun dan beroperasi. Berangkat dari rasa ingin tahu tentang cara melindungi sistem-sistem tersebut dari berbagai ancaman, saya memutuskan untuk mengarahkan karir saya sepenuhnya ke bidang **Cybersecurity**.",
+  "Ketertarikan ini saya wujudkan melalui tugas akhir dan publikasi riset berjudul “Implementation of a Browser Extension with Multi-Layer Security Filtering Architecture for Real-Time Phishing Website Detection”. Dalam setiap proyek, saya selalu mengandalkan pendekatan yang sangat **analitis dan detail-oriented**. Saya percaya bahwa keamanan terbaik dipelajari dengan cara membedah sistem secara langsung, sehingga metode **hands-on lab** menjadi bagian tak terpisahkan dari rutinitas eksplorasi teknis saya.",
+  "Saya memiliki semangat belajar yang tinggi dan sedang aktif mempertajam skill melalui **bootcamp intensif** serta **persiapan sertifikasi industri**. Saya sangat antusias untuk membawa energi dan dedikasi ini ke dalam peran entry-level di bidang cybersecurity, di mana saya bisa berkontribusi nyata sekaligus terus berkembang.",
+];
+
+const renderParagraph = (text: string) =>
+  text.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong class="font-bold text-on-surface">$1</strong>',
+  );
+---
+
+<section
+  id="about"
+  class="w-full flex flex-col gap-8 py-10 px-margin-mobile md:px-margin-desktop border-t-[3px] border-outline bg-[#4d17ed] checker-purple-fade"
+>
+  <SectionHeader label="about_me" title="About Me" />
+  <div
+    class="mx-auto w-full bg-surface brutal-border brutal-shadow p-8 flex flex-col gap-4"
+  >
+    {
+      aboutParagraphs.map((paragraph) => (
+        <p
+          class="text-body-md font-normal leading-relaxed text-on-surface-variant text-pretty"
+          set:html={renderParagraph(paragraph)}
+        />
+      ))
+    }
+  </div>
+</section>

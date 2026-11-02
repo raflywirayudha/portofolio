@@ -1,0 +1,149 @@
+---
+import { getImage } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import ProjectRow from './ProjectRow.astro';
+import { projects } from '../data/projects';
+
+const rows = await Promise.all(
+  projects.map(async (project, i) => ({
+    project,
+    index: i + 1,
+    mirrored: i % 2 === 1,
+    full: await getImage({
+      src: project.image,
+      width: Math.min(1600, project.image.width),
+      format: 'webp',
+      quality: 82,
+    }),
+    fullSecondary: project.secondaryImage
+      ? await getImage({
+          src: project.secondaryImage,
+          width: Math.min(1600, project.secondaryImage.width),
+          format: 'webp',
+          quality: 82,
+        })
+      : undefined,
+  })),
+);
+---
+
+<section
+  id="portfolio"
+  class="relative w-full flex flex-col border-t-[3px] border-outline pb-0 px-margin-mobile md:px-margin-desktop bg-[#4d17ed] text-surface checker-purple"
+>
+  <!-- Mobile: satu bidang gradien vertikal untuk header + semua project, tanpa sambungan -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
+  >
+  </div>
+
+  <!-- Desktop: header ikut bidang gradien project 1 (gelap dari kanan) -->
+  <div
+    class="relative -mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop pt-10 pb-6"
+  >
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 hidden md:block fade-from-right"
+    >
+    </div>
+    <SectionHeader label="portfolio" title="Selected Works" inverted />
+  </div>
+  <!-- Tanpa gap: jarak antar project jadi padding baris, sehingga gradien mengisi sela -->
+  <div class="flex flex-col">
+    {
+      rows.map((row) => (
+        <ProjectRow
+          project={row.project}
+          index={row.index}
+          mirrored={row.mirrored}
+          fadeFrom={row.mirrored ? 'left' : 'right'}
+          fullSrc={row.full.src}
+          fullSecondarySrc={row.fullSecondary?.src}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<dialog
+  id="project-lightbox"
+  aria-labelledby="project-lightbox-title"
+  class="w-[min(94vw,72rem)] max-w-none max-h-[94vh] p-0 m-auto bg-surface brutal-border brutal-shadow text-on-surface backdrop:bg-black/80"
+>
+  <div class="flex max-h-[94vh] flex-col">
+    <div
+      class="flex items-start justify-between gap-4 border-b-[3px] border-outline bg-background px-5 py-3"
+    >
+      <div class="flex min-w-0 flex-col gap-1">
+        <span
+          id="project-lightbox-meta"
+          class="font-label-mono text-[11px] font-bold uppercase text-on-surface-variant"
+        ></span>
+        <h3
+          id="project-lightbox-title"
+          class="truncate text-[18px] font-black uppercase leading-tight md:text-[22px]"
+        ></h3>
+      </div>
+      <button
+        type="button"
+        id="project-lightbox-close"
+        class="shrink-0 cursor-pointer bg-surface brutal-border brutal-shadow-sm brutal-hover transition-neobrutal px-3 py-1 font-label-mono text-[11px] font-bold uppercase"
+      >
+        Tutup
+      </button>
+    </div>
+
+    <div class="overflow-auto bg-surface-container-high p-3 md:p-4">
+      <img
+        id="project-lightbox-image"
+        alt=""
+        decoding="async"
+        class="mx-auto block max-h-[78vh] w-auto max-w-full brutal-border bg-surface"
+      />
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('project-lightbox') as HTMLDialogElement | null;
+  const image = document.getElementById('project-lightbox-image') as HTMLImageElement | null;
+  const title = document.getElementById('project-lightbox-title');
+  const meta = document.getElementById('project-lightbox-meta');
+  const closeButton = document.getElementById('project-lightbox-close');
+
+  if (dialog && image && title && meta) {
+    const triggers = document.querySelectorAll<HTMLElement>('[data-lightbox-src]');
+
+    const open = (trigger: HTMLElement) => {
+      const { lightboxSrc, lightboxAlt, lightboxTitle, lightboxMeta } = trigger.dataset;
+
+      image.src = lightboxSrc ?? '';
+      image.alt = lightboxAlt ?? '';
+      title.textContent = lightboxTitle ?? '';
+      meta.textContent = lightboxMeta ?? '';
+
+      dialog.showModal();
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => open(trigger));
+    });
+
+    closeButton?.addEventListener('click', () => dialog.close());
+
+    // Tutup saat klik area gelap di luar panel
+    dialog.addEventListener('click', (event) => {
+      if (event.target !== dialog) return;
+
+      const rect = dialog.getBoundingClientRect();
+      const isInsidePanel =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (!isInsidePanel) dialog.close();
+    });
+  }
+</script>
