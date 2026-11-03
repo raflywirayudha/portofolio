@@ -9,6 +9,10 @@ interface Props {
   mirrored?: boolean;
   /** Sisi gelap gradien — diletakkan di balik teks agar tetap terbaca */
   fadeFrom?: "left" | "right";
+  /** Baris sudah berada di dalam wrapper full-bleed, jadi tidak perlu negative margin lagi */
+  bleed?: boolean;
+  /** Tampilkan gradien vertikal khusus mobile untuk baris ini */
+  mobileFade?: boolean;
   /** URL gambar ukuran besar untuk lightbox */
   fullSrc: string;
   fullSecondarySrc?: string;
@@ -19,6 +23,8 @@ const {
   index,
   mirrored = false,
   fadeFrom = "right",
+  bleed = true,
+  mobileFade = true,
   fullSrc,
   fullSecondarySrc,
 } = Astro.props;
@@ -28,9 +34,24 @@ const secondaryLeftAligned = mirrored;
 ---
 
 <article
-  class="relative flex flex-col gap-8 md:flex-row md:items-center md:gap-12 -mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop py-12 md:py-16"
+  class:list={[
+    "relative flex flex-col gap-8 md:flex-row md:items-center md:gap-12 py-12 md:py-16",
+    bleed
+      ? "-mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop"
+      : "px-margin-mobile md:px-margin-desktop",
+  ]}
 >
-  <!-- Gradien horizontal per project (desktop). Di mobile gradien dipegang section agar menyatu -->
+  <!-- Gradien vertikal (mobile): tiap project punya bidang sendiri, gelap dari bawah -->
+  {
+    mobileFade && (
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
+      />
+    )
+  }
+
+  <!-- Gradien horizontal per project (desktop) -->
   <div
     aria-hidden="true"
     class:list={[
@@ -47,6 +68,7 @@ const secondaryLeftAligned = mirrored;
       project.secondaryImage && "md:pb-10",
       mirrored ? "md:order-last" : "",
     ]}
+    data-reveal="pop"
   >
     <button
       type="button"
@@ -141,7 +163,11 @@ const secondaryLeftAligned = mirrored;
   </div>
 
   <!-- ===== Teks ===== -->
-  <div class="relative z-10 flex flex-1 flex-col gap-5">
+  <div
+    class="relative z-10 flex flex-1 flex-col gap-5"
+    data-reveal="up"
+    style="--reveal-delay: 120ms"
+  >
     <div class="flex flex-wrap items-center gap-3">
       <!-- <span
         class="font-label-mono text-[13px] font-black uppercase bg-surface text-on-surface px-2 py-1 -rotate-3 shadow-[4px_4px_0_0_#ffffff] border-[3px] border-outline"

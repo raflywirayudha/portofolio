@@ -6,24 +6,104 @@ const photo = "/profil.png";
 
 <section
   id="hero"
-  class="w-full h-[91dvh] py-10 px-margin-mobile md:px-margin-desktop flex flex-col justify-center gap-6 relative bg-background blueprint-grid"
+  class="w-full min-h-[91dvh] lg:h-[91dvh] py-10 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center lg:items-stretch lg:text-left justify-center gap-5 lg:gap-6 relative bg-background blueprint-grid"
 >
+  <!-- Foto (mobile/tablet): mengikuti komposisi desktop, ukuran diperkecil -->
+  <div
+    class="relative z-20 mx-auto shrink-0 mb-5 lg:hidden"
+    data-reveal="pop"
+  >
+    <div class="relative w-[min(62vw,235px)]">
+      <!-- Lingkaran dekoratif: sudut kiri atas seperti di desktop -->
+      <div
+        class="shape-float absolute -left-9 -top-7 z-20 h-18 w-18 rotate-12 rounded-full border-[3px] border-outline bg-primary brutal-shadow-sm"
+        style="--float-y: -8px; --float-duration: 6.5s; --float-delay: 0s"
+        aria-hidden="true"
+      >
+      </div>
+      <!-- Persegi dekoratif: sisi kanan, sepertiga atas -->
+      <div
+        class="shape-float absolute -right-7 top-16 z-20 h-14 w-14 rotate-12 border-[3px] border-outline bg-primary brutal-shadow-sm"
+        style="--float-y: -6px; --float-duration: 7.5s; --float-delay: 1.2s"
+        aria-hidden="true"
+      >
+      </div>
+      <!-- Balok dekoratif: kanan bawah -->
+      <div
+        class="shape-float absolute -bottom-4 -right-3 z-20 h-8 w-26 rotate-3 border-[3px] border-outline bg-primary brutal-shadow-sm"
+        style="--float-y: -5px; --float-duration: 8s; --float-delay: 2.1s"
+        aria-hidden="true"
+      >
+      </div>
+      <!-- Persegi membulat dekoratif: kiri bawah -->
+      <div
+        class="shape-float absolute -left-7 bottom-8 z-20 h-11 w-17 -rotate-12 rounded-xl border-[3px] border-outline bg-primary"
+        style="--float-y: -7px; --float-duration: 6s; --float-delay: 0.6s"
+        aria-hidden="true"
+      >
+      </div>
+
+      <!-- Kartu utama: dot-grid + sudut membulat seperti desktop -->
+      <div
+        class="dot-grid brutal-border brutal-shadow relative z-10 aspect-square w-full overflow-hidden rounded-se-4xl rounded-es-4xl bg-surface -rotate-1"
+      >
+        <picture>
+          <source srcset="/profil.webp" type="image/webp" />
+          <img
+            alt={name}
+            src={photo}
+            width="420"
+            height="420"
+            fetchpriority="high"
+            class="relative z-10 h-full w-full object-cover object-top contrast-125"
+          />
+        </picture>
+      </div>
+    </div>
+  </div>
+
+  <!-- Label kecil (mobile/tablet) -->
+  <p
+    class="relative z-20 flex items-center justify-center gap-2 font-label-mono text-[11px] font-bold uppercase tracking-[0.16em] text-on-surface-variant lg:hidden"
+    data-reveal="up"
+    style="--reveal-delay: 80ms"
+  >
+    <span
+      class="h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
+      aria-hidden="true"></span>
+    Frontend Developer / Cybersecurity
+  </p>
+
   <h1
-    class="text-hero-title-mobile md:text-hero-title font-black uppercase max-w-4xl leading-tight text-on-surface relative z-20"
+    class="text-hero-title-mobile md:text-hero-title font-black uppercase max-w-4xl leading-[1.05] md:leading-tight text-on-surface relative z-20"
+    data-reveal="up"
+    style="--reveal-delay: 140ms"
   >
     {name}
     <br />
     <span
-      class="bg-primary text-5xl text-on-primary px-4 py-1 inline-block -rotate-1 brutal-border brutal-shadow mt-2"
+      class="bg-primary text-[18px] leading-[1.15] sm:text-5xl text-on-primary px-3 sm:px-4 whitespace-nowrap sm:whitespace-normal sm:py-1 py-2 inline-block -rotate-1 brutal-border brutal-shadow mt-3 sm:mt-2"
     >
       {role}
     </span>
   </h1>
 
-  <div class="flex flex-col sm:flex-row gap-6 mt-8 relative z-20">
+  <!-- Deskripsi singkat (mobile/tablet) -->
+  <!-- <p
+    class="relative z-20 max-w-[36ch] text-[15px] leading-relaxed text-on-surface-variant lg:hidden"
+  >
+    Fresh graduate Teknik Informatika yang fokus pada pengembangan antarmuka web
+    dan keamanan siber.
+  </p> -->
+
+  <div
+    class="flex w-full flex-col sm:flex-row gap-3 sm:gap-6 mt-1 lg:mt-8 lg:w-auto relative z-20"
+    data-reveal="up"
+    style="--reveal-delay: 220ms"
+  >
     <a
       href="#portfolio"
-      class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+      class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
     >
       LIHAT PROYEK
       <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
@@ -33,7 +113,7 @@ const photo = "/profil.png";
     <a
       href="/cv_muhammad-rafly-wirayudha.pdf"
       download="cv_muhammad-rafly-wirayudha.pdf"
-      class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+      class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
     >
       DOWNLOAD CV
       <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
@@ -45,24 +125,29 @@ const photo = "/profil.png";
   <!-- Photo Card Container -->
   <div
     class="hidden lg:block absolute right-40 top-40 w-[420px] h-[520px] z-10 translate-x-4 -translate-y-12 rotate-2"
+    data-reveal="pop"
+    style="--reveal-delay: 120ms"
   >
     <!-- Decorative Circle -->
     <div
-      class="hidden lg:block absolute right-[340px] top-[-40px] w-32 h-32 rounded-full bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      class="shape-float hidden lg:block absolute right-[340px] top-[-40px] w-32 h-32 rounded-full bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      style="--float-y: -8px; --float-duration: 6.5s; --float-delay: 0s"
       aria-hidden="true"
     >
     </div>
 
     <!-- Decorative Square -->
     <div
-      class="hidden lg:block absolute left-[370px] top-[150px] w-26 h-26 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      class="shape-float hidden lg:block absolute left-[370px] top-[150px] w-26 h-26 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
+      style="--float-y: -6px; --float-duration: 7.5s; --float-delay: 1.2s"
       aria-hidden="true"
     >
     </div>
 
     <!-- Decorative Triangle -->
     <div
-      class="absolute -left-12 bottom-12 w-24 h-16 bg-primary border-[3px] rounded-2xl border-outline brutal-shadow z-30 -rotate-20"
+      class="shape-float absolute -left-12 bottom-12 w-24 h-16 bg-primary border-[3px] rounded-2xl border-outline brutal-shadow z-30 -rotate-20"
+      style="--float-y: -7px; --float-duration: 6s; --float-delay: 0.6s"
       aria-hidden="true"
     >
     </div>
@@ -84,9 +169,29 @@ const photo = "/profil.png";
     </div>
     <!-- Decorative Rectangle -->
     <div
-      class="absolute -right-8 -bottom-4 w-48 h-12 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-3"
+      class="shape-float absolute -right-8 -bottom-4 w-48 h-12 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-3"
+      style="--float-y: -5px; --float-duration: 8s; --float-delay: 2.1s"
       aria-hidden="true"
     >
     </div>
   </div>
 </section>
+
+<script>
+  // Pause animasi shape saat Hero tidak terlihat (hemat CPU/baterai)
+  const hero = document.getElementById("hero");
+  const heroShapes = hero?.querySelectorAll<HTMLElement>(".shape-float");
+
+  if (hero && heroShapes && heroShapes.length > 0) {
+    const shapeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          hero.classList.toggle("shapes-paused", !entry.isIntersecting);
+        });
+      },
+      { threshold: 0 },
+    );
+
+    shapeObserver.observe(hero);
+  }
+</script>

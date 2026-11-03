@@ -143,45 +143,35 @@
 /* Garis blueprint tipis — dipakai di Hero */
 @utility blueprint-grid {
   background-image:
-    linear-gradient(
-      to right,
+    linear-gradient(to right,
       color-mix(in oklab, var(--color-outline) 7%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
+      transparent 1px),
+    linear-gradient(to bottom,
       color-mix(in oklab, var(--color-outline) 7%, transparent) 1px,
-      transparent 1px
-    );
+      transparent 1px);
   background-size: 32px 32px;
 }
 
 /* Dot grid versi tipis — untuk section yang isinya sudah padat (Certifications) */
 @utility dot-grid-faint {
-  background-image: radial-gradient(
-    color-mix(in oklab, var(--color-outline) 14%, transparent) 2px,
-    transparent 1.5px
-  );
+  background-image: radial-gradient(color-mix(in oklab, var(--color-outline) 14%, transparent) 2px,
+      transparent 1.5px);
   background-size: 24px 24px;
 }
 
 /* Checker diagonal ungu — latar section About */
 @utility checker-purple {
   background-image:
-    linear-gradient(
-      45deg,
+    linear-gradient(45deg,
       var(--color-primary) 25%,
       transparent 25%,
       transparent 75%,
-      var(--color-primary) 75%
-    ),
-    linear-gradient(
-      45deg,
+      var(--color-primary) 75%),
+    linear-gradient(45deg,
       var(--color-primary) 25%,
       transparent 25%,
       transparent 75%,
-      var(--color-primary) 75%
-    );
+      var(--color-primary) 75%);
   background-position: 0 0, 10.5px 10.5px;
   background-size: 21px 21px;
 }
@@ -189,27 +179,21 @@
 /* Checker ungu + gradien hitam dari bawah (lantai gelap, checker tetap terlihat di atas) */
 @utility checker-purple-fade {
   background-image:
-    linear-gradient(
-      to top,
+    linear-gradient(to top,
       rgb(0 0 0 / 0.92) 0%,
       rgb(0 0 0 / 0.62) 22%,
       rgb(0 0 0 / 0.22) 48%,
-      transparent 72%
-    ),
-    linear-gradient(
-      45deg,
+      transparent 72%),
+    linear-gradient(45deg,
       var(--color-primary) 25%,
       transparent 25%,
       transparent 75%,
-      var(--color-primary) 75%
-    ),
-    linear-gradient(
-      45deg,
+      var(--color-primary) 75%),
+    linear-gradient(45deg,
       var(--color-primary) 25%,
       transparent 25%,
       transparent 75%,
-      var(--color-primary) 75%
-    );
+      var(--color-primary) 75%);
   background-position: bottom, 0 0, 10.5px 10.5px;
   background-size: 100% 100%, 21px 21px, 21px 21px;
   background-repeat: no-repeat, repeat, repeat;
@@ -219,40 +203,115 @@
    Sisi gelap diletakkan di balik teks supaya teks putih tetap terbaca.
    Hitam dibuat dominan di seluruh lebar, checker hanya tersisa samar di ujung. */
 @utility fade-from-right {
-  background-image: linear-gradient(
-    to left,
-    rgb(0 0 0 / 0.96) 0%,
-    rgb(0 0 0 / 0.9) 35%,
-    rgb(0 0 0 / 0.74) 70%,
-    rgb(0 0 0 / 0.5) 100%
-  );
+  background-image: linear-gradient(to left,
+      rgb(0 0 0 / 0.96) 0%,
+      rgb(0 0 0 / 0.9) 35%,
+      rgb(0 0 0 / 0.74) 70%,
+      rgb(0 0 0 / 0.2) 100%);
 }
 
 @utility fade-from-left {
-  background-image: linear-gradient(
-    to right,
-    rgb(0 0 0 / 0.96) 0%,
-    rgb(0 0 0 / 0.9) 35%,
-    rgb(0 0 0 / 0.74) 70%,
-    rgb(0 0 0 / 0.5) 100%
-  );
+  background-image: linear-gradient(to right,
+      rgb(0 0 0 / 0.96) 0%,
+      rgb(0 0 0 / 0.9) 35%,
+      rgb(0 0 0 / 0.74) 70%,
+      rgb(0 0 0 / 0.2) 100%);
 }
 
 @utility fade-from-bottom {
-  background-image: linear-gradient(
-    to top,
-    rgb(0 0 0 / 0.96) 0%,
-    rgb(0 0 0 / 0.9) 35%,
-    rgb(0 0 0 / 0.74) 70%,
-    rgb(0 0 0 / 0.5) 100%
-  );
+  background-image: linear-gradient(to top,
+      rgb(0 0 0 / 0.96) 0%,
+      rgb(0 0 0 / 0.9) 35%,
+      rgb(0 0 0 / 0.74) 70%,
+      rgb(0 0 0 / 0.0) 100%);
 }
 
 /* Garis diagonal halus — alternatif checker yang lebih tenang */
 @utility diagonal-stripes {
-  background-image: repeating-linear-gradient(
-    45deg,
-    color-mix(in oklab, var(--color-primary) 12%, transparent) 0 12px,
-    transparent 12px 24px
-  );
+  background-image: repeating-linear-gradient(45deg,
+      color-mix(in oklab, var(--color-primary) 12%, transparent) 0 12px,
+      transparent 12px 24px);
+}
+/* ==== Scroll reveal (progressive enhancement) ====
+   Hanya aktif kalau JS hidup (html.js) dan user tidak meminta reduced motion.
+   Tanpa JS / reduced motion: konten tampil normal tanpa animasi. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transition:
+      opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal='up'] {
+    transform: translateY(28px);
+  }
+
+  html.js [data-reveal='left'] {
+    transform: translateX(-28px);
+  }
+
+  html.js [data-reveal='right'] {
+    transform: translateX(28px);
+  }
+
+  html.js [data-reveal='pop'] {
+    transform: scale(0.9);
+  }
+
+  /* Garis timeline tumbuh dari atas */
+  html.js [data-reveal='grow'] {
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+  }
+
+  /* transform hanya di-reset untuk varian yang memang memakainya,
+     supaya rotasi/translate bawaan Tailwind tidak ikut terhapus */
+  html.js [data-reveal='up'].is-visible,
+  html.js [data-reveal='left'].is-visible,
+  html.js [data-reveal='right'].is-visible,
+  html.js [data-reveal='pop'].is-visible,
+  html.js [data-reveal='grow'].is-visible {
+    transform: none;
+  }
+}
+
+/* ==== Shape dekoratif mengambang (Hero) ====
+   Animasi memakai properti `translate` supaya tidak menimpa `rotate`/`translate`
+   bawaan Tailwind. Amplitudo & tempo diatur lewat custom property per elemen. */
+@keyframes shape-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 calc(var(--float-y, -6px) * var(--float-mult, 1));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shape-float {
+    animation: shape-float var(--float-duration, 6.5s) ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+
+  /* Amplitudo lebih kecil di layar sempit */
+  @media (max-width: 1023px) {
+    .shape-float {
+      --float-mult: 0.6;
+    }
+  }
+
+  /* Hemat CPU saat Hero keluar dari viewport */
+  .shapes-paused .shape-float {
+    animation-play-state: paused;
+  }
 }

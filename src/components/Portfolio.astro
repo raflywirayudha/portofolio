@@ -31,28 +31,40 @@ const rows = await Promise.all(
   id="portfolio"
   class="relative w-full flex flex-col border-t-[3px] border-outline pb-0 px-margin-mobile md:px-margin-desktop bg-[#4d17ed] text-surface checker-purple"
 >
-  <!-- Mobile: satu bidang gradien vertikal untuk header + semua project, tanpa sambungan -->
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
-  >
-  </div>
-
-  <!-- Desktop: header ikut bidang gradien project 1 (gelap dari kanan) -->
-  <div
-    class="relative -mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop pt-10 pb-6"
-  >
+  <!-- Mobile: satu bidang gradien vertikal untuk header + project 1 -->
+  <div class="relative -mx-margin-mobile md:-mx-margin-desktop">
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute inset-0 hidden md:block fade-from-right"
+      class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
     >
     </div>
-    <SectionHeader label="portfolio" title="Selected Works" inverted />
+
+    <!-- Desktop: header ikut bidang gradien project 1 (gelap dari kanan) -->
+    <div class="relative px-margin-mobile md:px-margin-desktop pt-10 pb-6">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 hidden md:block fade-from-right"
+      >
+      </div>
+      <SectionHeader label="portfolio" title="Selected Works" inverted />
+    </div>
+
+    <ProjectRow
+      project={rows[0].project}
+      index={rows[0].index}
+      mirrored={rows[0].mirrored}
+      fadeFrom={rows[0].mirrored ? 'left' : 'right'}
+      bleed={false}
+      mobileFade={false}
+      fullSrc={rows[0].full.src}
+      fullSecondarySrc={rows[0].fullSecondary?.src}
+    />
   </div>
-  <!-- Tanpa gap: jarak antar project jadi padding baris, sehingga gradien mengisi sela -->
+
+  <!-- Project 2 dan seterusnya: masing-masing punya gradien mobile sendiri -->
   <div class="flex flex-col">
     {
-      rows.map((row) => (
+      rows.slice(1).map((row) => (
         <ProjectRow
           project={row.project}
           index={row.index}

@@ -12,10 +12,11 @@ import { education } from "../data/education";
     <div
       class="absolute left-0 top-0 bottom-0 w-[3px] bg-outline"
       aria-hidden="true"
+      data-reveal="grow"
     >
     </div>
     {
-      education.map((item) => (
+      education.map((item, index) => (
         <div class="relative pl-8">
           <div
             class:list={[
@@ -23,6 +24,8 @@ import { education } from "../data/education";
               item.featured ? "bg-primary" : "bg-surface",
             ]}
             aria-hidden="true"
+            data-reveal="pop"
+            style={`--reveal-delay: ${index * 120}ms`}
           />
           <div class="flex flex-col gap-1">
             <span
@@ -51,7 +54,7 @@ import { education } from "../data/education";
                 {item.highlights.map((highlight) => (
                   <li class="flex gap-2.5">
                     <span
-                      class="mt-[7px] h-2.5 w-2.5 shrink-0 border-[3px] border-outline bg-primary"
+                      class="mt-[9px] h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
                       aria-hidden="true"
                     />
                     <p class="text-body-md leading-relaxed text-on-surface-variant">
