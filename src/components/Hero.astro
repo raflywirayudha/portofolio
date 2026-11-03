@@ -9,10 +9,7 @@ const photo = "/profil.png";
   class="w-full min-h-[91dvh] lg:h-[91dvh] py-10 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center lg:items-stretch lg:text-left justify-center gap-5 lg:gap-6 relative bg-background blueprint-grid"
 >
   <!-- Foto (mobile/tablet): mengikuti komposisi desktop, ukuran diperkecil -->
-  <div
-    class="relative z-20 mx-auto shrink-0 mb-5 lg:hidden"
-    data-reveal="pop"
-  >
+  <div class="relative z-20 mx-auto shrink-0 mb-5 lg:hidden" data-reveal="pop">
     <div class="relative w-[min(62vw,235px)]">
       <!-- Lingkaran dekoratif: sudut kiri atas seperti di desktop -->
       <div
@@ -102,7 +99,7 @@ const photo = "/profil.png";
     style="--reveal-delay: 220ms"
   >
     <a
-      href="#portfolio"
+      href="#projects"
       class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
     >
       LIHAT PROYEK
@@ -111,13 +108,16 @@ const photo = "/profil.png";
       </span>
     </a>
     <a
+      id="cv-trigger"
       href="/cv_muhammad-rafly-wirayudha.pdf"
-      download="cv_muhammad-rafly-wirayudha.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-haspopup="dialog"
       class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
     >
-      DOWNLOAD CV
+      LIHAT CV
       <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
-        download
+        visibility
       </span>
     </a>
   </div>
@@ -177,6 +177,115 @@ const photo = "/profil.png";
   </div>
 </section>
 
+<dialog
+  id="cv-dialog"
+  aria-labelledby="cv-dialog-title"
+  class="w-[min(94vw,72rem)] max-w-none h-[92dvh] max-h-[92dvh] p-0 m-auto bg-surface brutal-border brutal-shadow text-on-surface backdrop:bg-black/80"
+>
+  <div class="flex h-full flex-col">
+    <div
+      class="flex flex-col gap-3 border-b-[3px] border-outline bg-background px-5 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+    >
+      <div class="flex min-w-0 flex-col gap-1">
+        <span
+          class="font-label-mono text-[11px] font-bold uppercase text-on-surface-variant"
+        >
+          Curriculum Vitae
+        </span>
+        <h2
+          id="cv-dialog-title"
+          class="text-[17px] font-black uppercase leading-tight md:text-[22px]"
+        >
+          Muhammad Rafly Wirayudha
+        </h2>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">
+        <a
+          id="cv-dialog-download"
+          href="/cv_muhammad-rafly-wirayudha.pdf"
+          download="cv_muhammad-rafly-wirayudha.pdf"
+          class="bg-primary text-on-primary brutal-border brutal-shadow-sm brutal-hover transition-neobrutal px-3 py-1 font-label-mono text-[11px] font-bold uppercase"
+        >
+          Unduh
+        </a>
+        <a
+          id="cv-dialog-newtab"
+          href="/cv_muhammad-rafly-wirayudha.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden bg-surface brutal-border brutal-shadow-sm brutal-hover transition-neobrutal px-3 py-1 font-label-mono text-[11px] font-bold uppercase sm:block"
+        >
+          Tab Baru
+        </a>
+        <button
+          type="button"
+          id="cv-dialog-close"
+          class="shrink-0 cursor-pointer bg-surface brutal-border brutal-shadow-sm brutal-hover transition-neobrutal px-3 py-1 font-label-mono text-[11px] font-bold uppercase"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <div class="min-h-0 flex-1 overflow-y-auto bg-surface-container-high p-3 md:p-4">
+      <iframe
+        id="cv-dialog-frame"
+        title="Pratinjau CV Muhammad Rafly Wirayudha"
+        class="hidden h-full w-full bg-surface brutal-border"
+      ></iframe>
+
+      <div id="cv-dialog-fallback" class="hidden h-full">
+        <div
+          class="flex h-full flex-col items-center justify-center gap-4 px-2 py-8 text-center"
+        >
+          <span
+            class="material-symbols-outlined text-[40px] text-on-surface-variant"
+            aria-hidden="true"
+          >
+            description
+          </span>
+          <p
+            class="font-label-mono text-[11px] font-bold uppercase text-on-surface-variant"
+          >
+            Browser ini belum mendukung pratinjau PDF langsung
+          </p>
+          <p class="max-w-[42ch] text-[15px] leading-relaxed text-on-surface">
+            Buka CV di tab baru atau unduh filenya untuk melihat isinya.
+          </p>
+          <div class="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+            <a
+              id="cv-dialog-fallback-open"
+              href="/cv_muhammad-rafly-wirayudha.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-primary text-on-primary px-6 py-3 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+            >
+              Buka CV
+              <span
+                class="material-symbols-outlined text-[18px]"
+                aria-hidden="true">open_in_new</span
+              >
+            </a>
+            <a
+              id="cv-dialog-fallback-download"
+              href="/cv_muhammad-rafly-wirayudha.pdf"
+              download="cv_muhammad-rafly-wirayudha.pdf"
+              class="bg-surface text-on-surface px-6 py-3 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2"
+            >
+              Unduh CV
+              <span
+                class="material-symbols-outlined text-[18px]"
+                aria-hidden="true">download</span
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <script>
   // Pause animasi shape saat Hero tidak terlihat (hemat CPU/baterai)
   const hero = document.getElementById("hero");
@@ -193,5 +302,72 @@ const photo = "/profil.png";
     );
 
     shapeObserver.observe(hero);
+  }
+
+  // ==== Pratinjau CV (dialog) ====
+  const cvTrigger = document.getElementById("cv-trigger");
+  const cvDialog = document.getElementById(
+    "cv-dialog",
+  ) as HTMLDialogElement | null;
+  const cvFrame = document.getElementById(
+    "cv-dialog-frame",
+  ) as HTMLIFrameElement | null;
+  const cvFallback = document.getElementById("cv-dialog-fallback");
+  const cvDownload = document.getElementById(
+    "cv-dialog-download",
+  ) as HTMLAnchorElement | null;
+  const cvNewTab = document.getElementById(
+    "cv-dialog-newtab",
+  ) as HTMLAnchorElement | null;
+  const cvClose = document.getElementById("cv-dialog-close");
+
+  if (cvTrigger && cvDialog && cvFrame && cvFallback) {
+    const cvUrl = cvTrigger.getAttribute("href") ?? "";
+
+    // Sinkronkan tautan unduh/buka supaya sumbernya tetap satu (href tombol hero)
+    cvDownload?.setAttribute("href", cvUrl);
+    cvNewTab?.setAttribute("href", cvUrl);
+
+    // iOS/iPadOS tidak mendukung pratinjau PDF inline di iframe
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+    const canEmbedPdf =
+      !isIOS &&
+      (navigator as Navigator & { pdfViewerEnabled?: boolean })
+        .pdfViewerEnabled !== false;
+
+    const openCvDialog = () => {
+      if (canEmbedPdf && !cvFrame.getAttribute("src")) {
+        cvFrame.src = `${cvUrl}#view=FitH&navpanes=0&toolbar=1`;
+      }
+
+      cvFrame.classList.toggle("hidden", !canEmbedPdf);
+      cvFallback.classList.toggle("hidden", canEmbedPdf);
+
+      cvDialog.showModal();
+    };
+
+    cvTrigger.addEventListener("click", (event) => {
+      // Biarkan perilaku bawaan (buka tab baru) bila JS gagal
+      event.preventDefault();
+      openCvDialog();
+    });
+
+    cvClose?.addEventListener("click", () => cvDialog.close());
+
+    // Tutup saat klik area gelap di luar panel
+    cvDialog.addEventListener("click", (event) => {
+      if (event.target !== cvDialog) return;
+
+      const rect = cvDialog.getBoundingClientRect();
+      const isInsidePanel =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (!isInsidePanel) cvDialog.close();
+    });
   }
 </script>

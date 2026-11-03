@@ -1,8 +1,8 @@
 ---
-import { getImage } from 'astro:assets';
-import SectionHeader from './SectionHeader.astro';
-import ProjectRow from './ProjectRow.astro';
-import { projects } from '../data/projects';
+import { getImage } from "astro:assets";
+import SectionHeader from "./SectionHeader.astro";
+import ProjectRow from "./ProjectRow.astro";
+import { projects } from "../data/projects";
 
 const rows = await Promise.all(
   projects.map(async (project, i) => ({
@@ -12,14 +12,14 @@ const rows = await Promise.all(
     full: await getImage({
       src: project.image,
       width: Math.min(1600, project.image.width),
-      format: 'webp',
+      format: "webp",
       quality: 82,
     }),
     fullSecondary: project.secondaryImage
       ? await getImage({
           src: project.secondaryImage,
           width: Math.min(1600, project.secondaryImage.width),
-          format: 'webp',
+          format: "webp",
           quality: 82,
         })
       : undefined,
@@ -28,7 +28,7 @@ const rows = await Promise.all(
 ---
 
 <section
-  id="portfolio"
+  id="projects"
   class="relative w-full flex flex-col border-t-[3px] border-outline pb-0 px-margin-mobile md:px-margin-desktop bg-[#4d17ed] text-surface checker-purple"
 >
   <!-- Mobile: satu bidang gradien vertikal untuk header + project 1 -->
@@ -46,14 +46,14 @@ const rows = await Promise.all(
         class="pointer-events-none absolute inset-0 hidden md:block fade-from-right"
       >
       </div>
-      <SectionHeader label="portfolio" title="Selected Works" inverted />
+      <SectionHeader label="projects" title="Selected Works" inverted />
     </div>
 
     <ProjectRow
       project={rows[0].project}
       index={rows[0].index}
       mirrored={rows[0].mirrored}
-      fadeFrom={rows[0].mirrored ? 'left' : 'right'}
+      fadeFrom={rows[0].mirrored ? "left" : "right"}
       bleed={false}
       mobileFade={false}
       fullSrc={rows[0].full.src}
@@ -64,16 +64,18 @@ const rows = await Promise.all(
   <!-- Project 2 dan seterusnya: masing-masing punya gradien mobile sendiri -->
   <div class="flex flex-col">
     {
-      rows.slice(1).map((row) => (
-        <ProjectRow
-          project={row.project}
-          index={row.index}
-          mirrored={row.mirrored}
-          fadeFrom={row.mirrored ? 'left' : 'right'}
-          fullSrc={row.full.src}
-          fullSecondarySrc={row.fullSecondary?.src}
-        />
-      ))
+      rows
+        .slice(1)
+        .map((row) => (
+          <ProjectRow
+            project={row.project}
+            index={row.index}
+            mirrored={row.mirrored}
+            fadeFrom={row.mirrored ? "left" : "right"}
+            fullSrc={row.full.src}
+            fullSecondarySrc={row.fullSecondary?.src}
+          />
+        ))
     }
   </div>
 </section>
@@ -95,7 +97,8 @@ const rows = await Promise.all(
         <h3
           id="project-lightbox-title"
           class="truncate text-[18px] font-black uppercase leading-tight md:text-[22px]"
-        ></h3>
+        >
+        </h3>
       </div>
       <button
         type="button"
@@ -118,34 +121,41 @@ const rows = await Promise.all(
 </dialog>
 
 <script>
-  const dialog = document.getElementById('project-lightbox') as HTMLDialogElement | null;
-  const image = document.getElementById('project-lightbox-image') as HTMLImageElement | null;
-  const title = document.getElementById('project-lightbox-title');
-  const meta = document.getElementById('project-lightbox-meta');
-  const closeButton = document.getElementById('project-lightbox-close');
+  const dialog = document.getElementById(
+    "project-lightbox",
+  ) as HTMLDialogElement | null;
+  const image = document.getElementById(
+    "project-lightbox-image",
+  ) as HTMLImageElement | null;
+  const title = document.getElementById("project-lightbox-title");
+  const meta = document.getElementById("project-lightbox-meta");
+  const closeButton = document.getElementById("project-lightbox-close");
 
   if (dialog && image && title && meta) {
-    const triggers = document.querySelectorAll<HTMLElement>('[data-lightbox-src]');
+    const triggers = document.querySelectorAll<HTMLElement>(
+      "[data-lightbox-src]",
+    );
 
     const open = (trigger: HTMLElement) => {
-      const { lightboxSrc, lightboxAlt, lightboxTitle, lightboxMeta } = trigger.dataset;
+      const { lightboxSrc, lightboxAlt, lightboxTitle, lightboxMeta } =
+        trigger.dataset;
 
-      image.src = lightboxSrc ?? '';
-      image.alt = lightboxAlt ?? '';
-      title.textContent = lightboxTitle ?? '';
-      meta.textContent = lightboxMeta ?? '';
+      image.src = lightboxSrc ?? "";
+      image.alt = lightboxAlt ?? "";
+      title.textContent = lightboxTitle ?? "";
+      meta.textContent = lightboxMeta ?? "";
 
       dialog.showModal();
     };
 
     triggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => open(trigger));
+      trigger.addEventListener("click", () => open(trigger));
     });
 
-    closeButton?.addEventListener('click', () => dialog.close());
+    closeButton?.addEventListener("click", () => dialog.close());
 
     // Tutup saat klik area gelap di luar panel
-    dialog.addEventListener('click', (event) => {
+    dialog.addEventListener("click", (event) => {
       if (event.target !== dialog) return;
 
       const rect = dialog.getBoundingClientRect();
