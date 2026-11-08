@@ -6,43 +6,47 @@ const photo = "/profil.png";
 
 <section
   id="hero"
-  class="w-full min-h-[91dvh] lg:h-[91dvh] py-10 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center lg:items-stretch lg:text-left justify-center gap-5 lg:gap-6 relative bg-background blueprint-grid"
+  class="w-full min-h-[91dvh] py-10 lg:py-16 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center justify-center gap-5 relative bg-background blueprint-grid lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-12 xl:gap-x-16"
 >
-  <!-- Foto (mobile/tablet): mengikuti komposisi desktop, ukuran diperkecil -->
-  <div class="relative z-20 mx-auto shrink-0 mb-5 lg:hidden" data-reveal="pop">
-    <div class="relative w-[min(62vw,235px)]">
-      <!-- Lingkaran dekoratif: sudut kiri atas seperti di desktop -->
+  <!-- Kartu foto: satu blok responsif (square di mobile, portrait di desktop) -->
+  <div
+    class="relative z-20 mx-auto shrink-0 mb-5 lg:order-2 lg:mx-0 lg:mb-0 lg:justify-self-end lg:rotate-2"
+    data-reveal="pop"
+    style="--reveal-delay: 120ms"
+  >
+    <div class="relative w-[min(62vw,235px)] lg:w-[clamp(280px,28vw,420px)]">
+      <!-- Lingkaran dekoratif: sudut kiri atas -->
       <div
-        class="shape-float absolute -left-9 -top-7 z-20 h-18 w-18 rotate-12 rounded-full border-[3px] border-outline bg-primary brutal-shadow-sm"
+        class="shape-float absolute -left-9 -top-7 z-20 h-18 w-18 rotate-12 rounded-full border-[3px] border-outline bg-primary brutal-shadow-sm lg:-left-12 lg:-top-10 lg:h-32 lg:w-32 lg:brutal-shadow"
         style="--float-y: -8px; --float-duration: 6.5s; --float-delay: 0s"
         aria-hidden="true"
       >
       </div>
       <!-- Persegi dekoratif: sisi kanan, sepertiga atas -->
       <div
-        class="shape-float absolute -right-7 top-16 z-20 h-14 w-14 rotate-12 border-[3px] border-outline bg-primary brutal-shadow-sm"
+        class="shape-float absolute -right-7 top-16 z-20 h-14 w-14 rotate-12 border-[3px] border-outline bg-primary brutal-shadow-sm lg:-right-14 lg:top-[29%] lg:h-26 lg:w-26 lg:brutal-shadow"
         style="--float-y: -6px; --float-duration: 7.5s; --float-delay: 1.2s"
         aria-hidden="true"
       >
       </div>
       <!-- Balok dekoratif: kanan bawah -->
       <div
-        class="shape-float absolute -bottom-4 -right-3 z-20 h-8 w-26 rotate-3 border-[3px] border-outline bg-primary brutal-shadow-sm"
+        class="shape-float absolute -bottom-4 -right-3 z-20 h-8 w-26 rotate-3 border-[3px] border-outline bg-primary brutal-shadow-sm lg:-right-8 lg:h-12 lg:w-48 lg:brutal-shadow"
         style="--float-y: -5px; --float-duration: 8s; --float-delay: 2.1s"
         aria-hidden="true"
       >
       </div>
       <!-- Persegi membulat dekoratif: kiri bawah -->
       <div
-        class="shape-float absolute -left-7 bottom-8 z-20 h-11 w-17 -rotate-12 rounded-xl border-[3px] border-outline bg-primary"
+        class="shape-float absolute -left-7 bottom-8 z-20 h-11 w-17 -rotate-12 rounded-xl border-[3px] border-outline bg-primary lg:-left-12 lg:bottom-12 lg:h-16 lg:w-24 lg:-rotate-20 lg:rounded-2xl lg:brutal-shadow"
         style="--float-y: -7px; --float-duration: 6s; --float-delay: 0.6s"
         aria-hidden="true"
       >
       </div>
 
-      <!-- Kartu utama: dot-grid + sudut membulat seperti desktop -->
+      <!-- Kartu utama: dot-grid + sudut membulat -->
       <div
-        class="dot-grid brutal-border brutal-shadow relative z-10 aspect-square w-full overflow-hidden rounded-se-4xl rounded-es-4xl bg-surface -rotate-1"
+        class="dot-grid brutal-border brutal-shadow relative z-10 aspect-square w-full overflow-hidden rounded-se-4xl rounded-es-4xl bg-surface -rotate-1 lg:aspect-[21/26] lg:max-h-[calc(91dvh_-_8rem)]"
       >
         <picture>
           <source srcset="/profil.webp" type="image/webp" />
@@ -50,129 +54,72 @@ const photo = "/profil.png";
             alt={name}
             src={photo}
             width="420"
-            height="420"
+            height="520"
             fetchpriority="high"
-            class="relative z-10 h-full w-full object-cover object-top contrast-125"
+            class="relative z-10 h-full w-full object-cover object-top contrast-125 lg:object-center lg:grayscale lg:transition-all lg:duration-300 lg:hover:grayscale-0"
           />
         </picture>
       </div>
     </div>
   </div>
 
-  <!-- Label kecil (mobile/tablet) -->
-  <p
-    class="relative z-20 flex items-center justify-center gap-2 font-label-mono text-[11px] font-bold uppercase tracking-[0.16em] text-on-surface-variant lg:hidden"
-    data-reveal="up"
-    style="--reveal-delay: 80ms"
-  >
-    <span
-      class="h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
-      aria-hidden="true"></span>
-    Frontend Developer / Cybersecurity
-  </p>
-
-  <h1
-    class="text-hero-title-mobile md:text-hero-title font-black uppercase max-w-4xl leading-[1.05] md:leading-tight text-on-surface relative z-20"
-    data-reveal="up"
-    style="--reveal-delay: 140ms"
-  >
-    {name}
-    <br />
-    <span
-      class="bg-primary text-[18px] leading-[1.15] sm:text-5xl text-on-primary px-3 sm:px-4 whitespace-nowrap sm:whitespace-normal sm:py-1 py-2 inline-block -rotate-1 brutal-border brutal-shadow mt-3 sm:mt-2"
-    >
-      {role}
-    </span>
-  </h1>
-
-  <!-- Deskripsi singkat (mobile/tablet) -->
-  <!-- <p
-    class="relative z-20 max-w-[36ch] text-[15px] leading-relaxed text-on-surface-variant lg:hidden"
-  >
-    Fresh graduate Teknik Informatika yang fokus pada pengembangan antarmuka web
-    dan keamanan siber.
-  </p> -->
-
+  <!-- Kolom teks -->
   <div
-    class="flex w-full flex-col sm:flex-row gap-3 sm:gap-6 mt-1 lg:mt-8 lg:w-auto relative z-20"
-    data-reveal="up"
-    style="--reveal-delay: 220ms"
+    class="relative z-20 flex w-full min-w-0 flex-col items-center gap-5 text-center [container-type:inline-size] lg:items-start lg:gap-6 lg:text-left"
   >
-    <a
-      href="#projects"
-      class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
+    <!-- Label kecil (mobile/tablet) -->
+    <p
+      class="relative z-20 flex items-center justify-center gap-2 font-label-mono text-[11px] font-bold uppercase tracking-[0.16em] text-on-surface-variant lg:hidden"
+      data-reveal="up"
+      style="--reveal-delay: 80ms"
     >
-      LIHAT PROYEK
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
-        arrow_forward
+      <span
+        class="h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
+        aria-hidden="true"></span>
+      Frontend Developer / Cybersecurity
+    </p>
+
+    <h1
+      class="text-hero-title-mobile md:text-hero-title lg:text-[clamp(40px,4.4vw,64px)] font-black uppercase max-w-4xl leading-[1.05] md:leading-tight text-on-surface relative z-20"
+      data-reveal="up"
+      style="--reveal-delay: 140ms"
+    >
+      {name}
+      <br />
+      <span
+        class="bg-primary text-[clamp(13px,5.2cqw,44px)] leading-[1.15] text-on-primary px-3 sm:px-4 whitespace-nowrap sm:py-1 py-2 inline-block -rotate-1 brutal-border brutal-shadow mt-3 sm:mt-2"
+      >
+        {role}
       </span>
-    </a>
-    <a
-      id="cv-trigger"
-      href="/cv_muhammad-rafly-wirayudha.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-haspopup="dialog"
-      class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
-    >
-      LIHAT CV
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
-        visibility
-      </span>
-    </a>
-  </div>
+    </h1>
 
-  <!-- Photo Card Container -->
-  <div
-    class="hidden lg:block absolute right-40 top-40 w-[420px] h-[520px] z-10 translate-x-4 -translate-y-12 rotate-2"
-    data-reveal="pop"
-    style="--reveal-delay: 120ms"
-  >
-    <!-- Decorative Circle -->
     <div
-      class="shape-float hidden lg:block absolute right-[340px] top-[-40px] w-32 h-32 rounded-full bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
-      style="--float-y: -8px; --float-duration: 6.5s; --float-delay: 0s"
-      aria-hidden="true"
+      class="flex w-full flex-col sm:flex-row gap-3 sm:gap-6 mt-1 lg:mt-2 lg:w-auto relative z-20"
+      data-reveal="up"
+      style="--reveal-delay: 220ms"
     >
-    </div>
-
-    <!-- Decorative Square -->
-    <div
-      class="shape-float hidden lg:block absolute left-[370px] top-[150px] w-26 h-26 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-12"
-      style="--float-y: -6px; --float-duration: 7.5s; --float-delay: 1.2s"
-      aria-hidden="true"
-    >
-    </div>
-
-    <!-- Decorative Triangle -->
-    <div
-      class="shape-float absolute -left-12 bottom-12 w-24 h-16 bg-primary border-[3px] rounded-2xl border-outline brutal-shadow z-30 -rotate-20"
-      style="--float-y: -7px; --float-duration: 6s; --float-delay: 0.6s"
-      aria-hidden="true"
-    >
-    </div>
-    <!-- Main Card -->
-    <div
-      class="w-full h-full bg-surface brutal-border brutal-shadow dot-grid relative overflow-hidden flex items-center justify-center rounded-se-4xl rounded-es-4xl"
-    >
-      <picture>
-        <source srcset="/profil.webp" type="image/webp" />
-        <img
-          alt={name}
-          src={photo}
-          width="420"
-          height="520"
-          fetchpriority="high"
-          class="w-full h-full object-cover contrast-125 grayscale hover:grayscale-0 transition-all duration-300 relative z-10"
-        />
-      </picture>
-    </div>
-    <!-- Decorative Rectangle -->
-    <div
-      class="shape-float absolute -right-8 -bottom-4 w-48 h-12 bg-primary border-[3px] border-outline brutal-shadow z-30 rotate-3"
-      style="--float-y: -5px; --float-duration: 8s; --float-delay: 2.1s"
-      aria-hidden="true"
-    >
+      <a
+        href="#projects"
+        class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
+      >
+        LIHAT PROYEK
+        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
+          arrow_forward
+        </span>
+      </a>
+      <a
+        id="cv-trigger"
+        href="/cv_muhammad-rafly-wirayudha.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-haspopup="dialog"
+        class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
+      >
+        LIHAT CV
+        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
+          visibility
+        </span>
+      </a>
     </div>
   </div>
 </section>

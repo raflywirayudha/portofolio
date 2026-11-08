@@ -20,7 +20,7 @@
   --color-error-container: #ff4444;
 
   /* ==== Spacing ==== */
-  --spacing-margin-desktop: 200px;
+  --spacing-margin-desktop: clamp(32px, 9vw, 200px);
   --spacing-margin-mobile: 20px;
   --spacing-gutter: 24px;
   --spacing-shadow-offset: 6px;

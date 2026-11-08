@@ -8,7 +8,9 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ links, ctaLabel }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
+  const [menuTop, setMenuTop] = useState(0);
 
+  // Kunci scroll body selama menu terbuka
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     const onKey = (e: KeyboardEvent) => {
@@ -21,6 +23,40 @@ export default function MobileMenu({ links, ctaLabel }: MobileMenuProps) {
     };
   }, [open]);
 
+  // Panel menempel tepat di bawah nav (tinggi nav diukur, bukan angka mati)
+  const toggle = () => {
+    if (!open) {
+      const nav = document.querySelector('nav');
+      setMenuTop(nav ? nav.getBoundingClientRect().bottom : 0);
+    }
+    setOpen((v) => !v);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+
+    const nav = document.querySelector('nav');
+    const update = () => {
+      setMenuTop(nav ? nav.getBoundingClientRect().bottom : 0);
+    };
+
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [open]);
+
+  // Tutup otomatis saat viewport melebar ke layout desktop
+  useEffect(() => {
+    if (!open) return;
+
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onChange = () => {
+      if (mq.matches) setOpen(false);
+    };
+
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [open]);
+
   return (
     <>
       <button
@@ -28,8 +64,8 @@ export default function MobileMenu({ links, ctaLabel }: MobileMenuProps) {
         aria-label={open ? 'Tutup menu' : 'Buka menu'}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        onClick={() => setOpen((v) => !v)}
-        className="md:hidden flex items-center justify-center p-2 brutal-border bg-surface brutal-shadow transition-neobrutal brutal-hover"
+        onClick={toggle}
+        className="lg:hidden flex items-center justify-center p-2 brutal-border bg-surface brutal-shadow transition-neobrutal brutal-hover"
       >
         <span
           className="material-symbols-outlined text-on-surface"
@@ -42,7 +78,8 @@ export default function MobileMenu({ links, ctaLabel }: MobileMenuProps) {
       {open && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 top-[65px] z-40 bg-surface border-b-[3px] border-outline flex flex-col gap-2 p-margin-mobile md:hidden"
+          style={{ top: menuTop }}
+          className="fixed inset-x-0 bottom-0 z-40 bg-surface border-b-[3px] border-outline flex flex-col gap-2 p-margin-mobile overflow-y-auto overscroll-contain lg:hidden"
         >
           {links.map((link) => (
             <a

@@ -7,13 +7,56 @@ interface Props {
 }
 
 const {
-  title = "Muhammad Rafly Wirayudha — Portfolio",
-  description = "Portfolio of Muhammad Rafly Wirayudha, a passionate frontend developer specializing in performance-driven web applications with a bold neobrutalist aesthetic.",
+  title = "Muhammad Rafly Wirayudha — Portofolio",
+  description = "Portofolio Muhammad Rafly Wirayudha — frontend developer dan cybersecurity enthusiast. Kumpulan proyek, pengalaman, dan sertifikasi.",
 } = Astro.props;
 
 const siteURL = Astro.site ?? new URL(Astro.url.origin);
 const canonicalURL = new URL(Astro.url.pathname, siteURL);
 const socialImageURL = new URL("/profil.png", siteURL);
+const siteRoot = new URL("/", siteURL).href;
+
+// Structured data: membantu Google memahami nama situs, halaman, dan pemiliknya.
+// Catatan: `jobTitle` sengaja tidak diisi "Frontend Developer" agar tidak
+// memperkuat frasa itu sebagai judul di hasil pencarian.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteRoot}#website`,
+      url: siteRoot,
+      name: "Muhammad Rafly Wirayudha",
+      alternateName: ["Portofolio", "Portfolio", "Rafly Wirayudha"],
+      inLanguage: "id",
+      publisher: { "@id": `${siteRoot}#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteRoot}#person`,
+      name: "Muhammad Rafly Wirayudha",
+      url: siteRoot,
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "UIN Sultan Syarif Kasim Riau",
+      },
+      knowsAbout: ["Frontend Development", "Cybersecurity"],
+      sameAs: [
+        "https://github.com/raflywirayudha",
+        "https://www.linkedin.com/in/muhammadraflywirayudha/",
+        "https://www.instagram.com/raflywirayudhaa/",
+      ],
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteRoot}#webpage`,
+      url: siteRoot,
+      name: title,
+      inLanguage: "id",
+      mainEntity: { "@id": `${siteRoot}#person` },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -41,6 +84,11 @@ const socialImageURL = new URL("/profil.png", siteURL);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
     <meta name="theme-color" content="#f8faff" />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(structuredData)}
+    />
     <script is:inline>
       document.documentElement.classList.add("js");
     </script>
