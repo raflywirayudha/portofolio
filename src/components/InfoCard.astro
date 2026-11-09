@@ -1,0 +1,133 @@
+---
+interface Highlight {
+  /** Label singkat di awal kalimat (opsional) */
+  label?: string;
+  text: string;
+  /** Frasa di dalam `text` yang ditampilkan tebal dan ungu */
+  emphasis?: string[];
+}
+
+interface Props {
+  period: string;
+  /** Teks tambahan setelah periode, mis. "Magang" */
+  periodNote?: string;
+  title: string;
+  subtitle: string;
+  /** Badge konteks di kanan atas kartu */
+  tag?: string;
+  /** Judul daftar poin, mis. "Key Responsibilities & Deliverables" */
+  sectionLabel: string;
+  description?: string;
+  highlights?: Highlight[];
+  /** Geser urutan warna chip antar kartu */
+  colorOffset?: number;
+}
+
+const {
+  period,
+  periodNote,
+  title,
+  subtitle,
+  tag,
+  sectionLabel,
+  description,
+  highlights,
+  colorOffset = 0,
+} = Astro.props;
+
+/** Warna chip nomor, dipakai bergantian agar tiap baris punya aksen berbeda. */
+const chipStyles = [
+  "bg-primary text-on-primary",
+  "bg-accent-lime text-on-surface",
+  "bg-surface text-primary",
+  "bg-accent-amber text-on-surface",
+  "bg-on-surface text-surface",
+];
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Pecah teks menjadi bagian biasa dan bagian yang perlu ditebalkan. */
+function inlineSegments(text: string, emphasis: string[] = []) {
+  if (emphasis.length === 0) return [{ text, strong: false }];
+
+  const pattern = new RegExp(`(${emphasis.map(escapeRegExp).join("|")})`, "g");
+
+  return text
+    .split(pattern)
+    .filter(Boolean)
+    .map((part) => ({ text: part, strong: emphasis.includes(part) }));
+}
+---
+
+<article
+  class="bg-surface brutal-border brutal-shadow p-5 md:p-8 flex flex-col gap-6"
+  data-reveal="up"
+  style={`--reveal-delay: ${colorOffset * 120}ms`}
+>
+  <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div class="flex min-w-0 flex-col gap-3">
+      <span class="font-label-mono text-label-mono bg-accent-lime text-on-surface brutal-border self-start px-3 py-1.5 font-bold uppercase">
+        <span aria-hidden="true" class="mr-1.5">&#9656;</span>
+        {period}{periodNote && <span class="mx-1.5" aria-hidden="true">·</span>}{periodNote}
+      </span>
+      <h3 class="text-[26px] md:text-[36px] font-black uppercase leading-[1.05] tracking-tight text-on-surface">
+        {title}
+      </h3>
+      <p class="font-label-mono text-[13px] md:text-[14px] font-bold uppercase tracking-[0.16em] text-primary">
+        {subtitle}
+      </p>
+    </div>
+    {tag && (
+      <span class="font-label-mono text-[13px] font-bold uppercase tracking-[0.14em] bg-accent-amber text-primary brutal-border shadow-[4px_4px_0_0_var(--color-outline)] px-5 py-3 self-start md:mt-10 md:shrink-0">
+        {tag}
+      </span>
+    )}
+  </div>
+
+  {description && (
+    <p class="text-[14px] leading-relaxed text-on-surface-variant max-w-3xl">
+      {description}
+    </p>
+  )}
+
+  {highlights && highlights.length > 0 && (
+    <div class="flex flex-col gap-4">
+      <p class="flex items-center gap-2.5 font-label-mono text-[12px] font-bold uppercase tracking-[0.18em] text-on-surface">
+        <span class="h-3 w-3 shrink-0 bg-primary" aria-hidden="true" />
+        {sectionLabel}
+      </p>
+      <ul class="flex flex-col gap-3.5">
+        {highlights.map((highlight, index) => (
+          <li class="flex items-start gap-3.5 bg-surface brutal-border shadow-[3px_3px_0_0_var(--color-outline)] px-3.5 py-3 md:px-4">
+            <span
+              class:list={[
+                "font-label-mono text-[12px] font-bold leading-none brutal-border px-2 py-1.5 shrink-0",
+                chipStyles[(colorOffset + index) % chipStyles.length],
+              ]}
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <p class="text-[14px] leading-relaxed text-on-surface-variant">
+              {highlight.label && (
+                <>
+                  <span class="font-bold text-primary">{highlight.label}</span>
+                  <span class="mr-1" aria-hidden="true">—</span>
+                </>
+              )}
+              {inlineSegments(highlight.text, highlight.emphasis).map((segment) =>
+                segment.strong ? (
+                  <span class="font-bold text-primary">{segment.text}</span>
+                ) : (
+                  <span>{segment.text}</span>
+                ),
+              )}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</article>

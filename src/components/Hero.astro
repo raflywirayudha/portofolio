@@ -6,8 +6,62 @@ const photo = "/profil.png";
 
 <section
   id="hero"
-  class="w-full min-h-[91dvh] py-10 lg:py-16 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center justify-center gap-5 relative bg-background blueprint-grid lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-12 xl:gap-x-16"
+  class="w-full min-h-[91dvh] py-10 lg:py-16 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center justify-center gap-5 relative overflow-hidden bg-hero-canvas lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-12 xl:gap-x-16"
 >
+  <!-- Halftone mesh dari code.html -->
+  <div
+    class="pointer-events-none absolute left-0 top-0 z-0 h-[34%] w-[68%] opacity-30 halftone-top-left sm:h-[530px] sm:w-[650px] sm:opacity-40"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute bottom-0 right-0 z-0 h-[36%] w-[72%] opacity-25 halftone-bottom-right sm:h-[590px] sm:w-[710px] sm:opacity-35"
+    aria-hidden="true"
+  >
+  </div>
+  <!-- Lingkaran dekoratif di belakang judul -->
+  <div
+    class="pointer-events-none absolute left-[27%] top-[4%] hidden h-[280px] w-[280px] rounded-full border border-primary/30 lg:block"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-12 rounded-full border border-primary/25"></div>
+    <div class="absolute inset-24 rounded-full border border-primary/20"></div>
+  </div>
+  <!-- Bintang dekoratif di antara kolom teks dan foto -->
+  <svg
+    class="pointer-events-none absolute left-[47%] top-[12%] hidden h-8 w-8 text-primary lg:block"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"></path>
+  </svg>
+  <!-- Bintang ungu tambahan -->
+  <svg
+    class="pointer-events-none absolute right-[7%] top-[6%] h-5 w-5 text-primary/80 lg:h-6 lg:w-6"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"></path>
+  </svg>
+  <svg
+    class="pointer-events-none absolute left-[34%] top-[7%] hidden h-4 w-4 text-primary/80 lg:block"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"></path>
+  </svg>
+  <svg
+    class="pointer-events-none absolute left-[21%] top-[26%] hidden h-5 w-5 text-primary/70 lg:block"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"></path>
+  </svg>
+
   <!-- Kartu foto: satu blok responsif (square di mobile, portrait di desktop) -->
   <div
     class="relative z-20 mx-auto shrink-0 mb-5 lg:order-2 lg:mx-0 lg:mb-0 lg:justify-self-end lg:rotate-2"
@@ -67,44 +121,83 @@ const photo = "/profil.png";
   <div
     class="relative z-20 flex w-full min-w-0 flex-col items-center gap-5 text-center [container-type:inline-size] lg:items-start lg:gap-6 lg:text-left"
   >
-    <!-- Label kecil (mobile/tablet) -->
-    <p
-      class="relative z-20 flex items-center justify-center gap-2 font-label-mono text-[11px] font-bold uppercase tracking-[0.16em] text-on-surface-variant lg:hidden"
+    <!-- Badge status (disembunyikan di mobile) -->
+    <div
+      class="relative z-20 hidden flex-wrap items-center justify-center gap-2.5 md:flex lg:justify-start"
       data-reveal="up"
       style="--reveal-delay: 80ms"
     >
       <span
-        class="h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
-        aria-hidden="true"></span>
-      Frontend Developer / Cybersecurity
-    </p>
+        class="inline-flex items-center gap-2 bg-accent-yellow px-3 py-1.5 font-label-mono text-[11px] font-bold uppercase tracking-[0.12em] text-on-surface brutal-border shadow-[3px_3px_0_0_var(--color-outline)]"
+      >
+        <span
+          class="h-2.5 w-2.5 shrink-0 rounded-full bg-[#34d399]"
+          aria-hidden="true"></span>
+        System_Ready // 2026
+      </span>
+      <span
+        class="inline-flex items-center gap-1.5 bg-surface px-3 py-1.5 font-label-mono text-[11px] font-bold uppercase tracking-[0.12em] text-on-surface brutal-border shadow-[3px_3px_0_0_var(--color-outline)]"
+      >
+        <span aria-hidden="true">&raquo;</span>
+        Portfolio_OS_V3.2
+      </span>
+    </div>
 
     <h1
-      class="text-hero-title-mobile md:text-hero-title lg:text-[clamp(40px,4.4vw,64px)] font-black uppercase max-w-4xl leading-[1.05] md:leading-tight text-on-surface relative z-20"
+      class="text-[clamp(40px,11.5vw,76px)] font-black uppercase leading-[0.98] text-on-surface relative z-20"
       data-reveal="up"
       style="--reveal-delay: 140ms"
     >
-      {name}
-      <br />
+      <span class="block">Muhammad</span>
+      <span class="block text-primary">Rafly</span>
       <span
-        class="bg-primary text-[clamp(13px,5.2cqw,44px)] leading-[1.15] text-on-primary px-3 sm:px-4 whitespace-nowrap sm:py-1 py-2 inline-block -rotate-1 brutal-border brutal-shadow mt-3 sm:mt-2"
+        class="mt-2 inline-block bg-primary px-4 py-1.5 text-on-primary -rotate-1 brutal-border brutal-shadow"
       >
-        {role}
+        Wirayudha
       </span>
     </h1>
 
-    <div
-      class="flex w-full flex-col sm:flex-row gap-3 sm:gap-6 mt-1 lg:mt-2 lg:w-auto relative z-20"
+    <!-- Role -->
+    <p
+      class="relative z-20 inline-flex items-center gap-2 bg-accent-lavender-deep px-3 py-1.5 text-center font-label-mono text-[15px] font-bold uppercase tracking-[0.14em] text-on-surface brutal-border shadow-[3px_3px_0_0_var(--color-outline)] sm:text-[11px] md:text-[32px] lg:text-left"
       data-reveal="up"
-      style="--reveal-delay: 220ms"
+      style="--reveal-delay: 200ms"
+    >
+      <span
+        class="h-3 w-3 shrink-0 rounded-full bg-[#34d399]"
+        aria-hidden="true"></span>
+      <span>[ {role} ]</span>
+    </p>
+
+    <!-- Ringkasan -->
+    <p
+      class="hidden relative z-20 max-w-[52ch] text-[15px] leading-relaxed text-on-surface md:text-[16px]"
+      data-reveal="up"
+      style="--reveal-delay: 240ms"
+    >
+      Undergraduate engineer bridging
+      <span class="bg-accent-yellow px-1 py-0.5 font-semibold">
+        Full-Stack Systems
+      </span>
+      <span class="mx-1">and</span>
+      <span class="border-2 border-outline px-1 py-0.5 font-semibold">
+        Cyber Defense
+      </span>. Designing resilient, high-speed interfaces with zero-compromise
+      application security.
+    </p>
+
+    <div
+      class="relative z-20 mt-1 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:mt-2 lg:w-auto lg:justify-start"
+      data-reveal="up"
+      style="--reveal-delay: 300ms"
     >
       <a
         href="#projects"
-        class="bg-primary text-on-primary px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
+        class="bg-surface text-on-surface px-7 py-3.5 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
       >
-        LIHAT PROYEK
+        Lihat Proyek
         <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
-          arrow_forward
+          north_east
         </span>
       </a>
       <a
@@ -113,9 +206,9 @@ const photo = "/profil.png";
         target="_blank"
         rel="noopener noreferrer"
         aria-haspopup="dialog"
-        class="bg-surface text-on-surface px-8 py-4 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
+        class="bg-primary text-on-primary px-7 py-3.5 brutal-border brutal-shadow transition-neobrutal brutal-hover font-label-mono text-label-mono uppercase text-center flex items-center justify-center gap-2 whitespace-nowrap"
       >
-        LIHAT CV
+        Lihat CV
         <span class="material-symbols-outlined text-[18px]" aria-hidden="true">
           visibility
         </span>
@@ -175,12 +268,13 @@ const photo = "/profil.png";
       </div>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-y-auto bg-surface-container-high p-3 md:p-4">
+    <div
+      class="min-h-0 flex-1 overflow-y-auto bg-surface-container-high p-3 md:p-4"
+    >
       <iframe
         id="cv-dialog-frame"
         title="Pratinjau CV Muhammad Rafly Wirayudha"
-        class="hidden h-full w-full bg-surface brutal-border"
-      ></iframe>
+        class="hidden h-full w-full bg-surface brutal-border"></iframe>
 
       <div id="cv-dialog-fallback" class="hidden h-full">
         <div
@@ -200,7 +294,9 @@ const photo = "/profil.png";
           <p class="max-w-[42ch] text-[15px] leading-relaxed text-on-surface">
             Buka CV di tab baru atau unduh filenya untuk melihat isinya.
           </p>
-          <div class="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+          <div
+            class="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row"
+          >
             <a
               id="cv-dialog-fallback-open"
               href="/cv_muhammad-rafly-wirayudha.pdf"

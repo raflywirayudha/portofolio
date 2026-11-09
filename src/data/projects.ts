@@ -15,6 +15,12 @@ export interface Project {
   secondaryImageAlt?: string;
   tags: string[];
   year: string;
+  /** Label kategori di badge atas kartu */
+  category?: string;
+  /** Jenis produk di samping tahun, mis. "Browser Extension" */
+  kind?: string;
+  /** Warna badge kategori */
+  accent?: 'lime' | 'amber';
   /** Ditampilkan di frame browser palsu */
   domain: string;
   /** Gambar sudah membawa chrome browser sendiri — jangan tambah bar palsu */
@@ -33,6 +39,9 @@ export const projects: Project[] = [
       'Browser window showing the Raphish phishing warning screen in red, with the extension popup listing the detected site and its real-time protection toggle.',
     tags: ['Chrome Extension', 'HTML', 'CSS', 'JavaScript', 'FastAPI', 'PhishTank API', 'Tranco List API', 'XGBoost', 'Manifest V3'],
     year: '2026',
+    category: 'Cybersecurity & ML',
+    kind: 'Browser Extension',
+    accent: 'lime',
     domain: '',
     hasOwnBrowserChrome: true,
     demo: '#',
@@ -50,6 +59,9 @@ export const projects: Project[] = [
       'Koki Akhir Bulan chat interface, with a conversation on the left and the generated recipe details on the right.',
     tags: ['React', 'Express.js', 'Tailwind CSS', 'Vite', 'Gemini AI'],
     year: '2026',
+    category: 'AI / Experimental',
+    kind: 'Web Application',
+    accent: 'amber',
     domain: '',
     demo: '#',
     repo: 'https://github.com/raflywirayudha/koki-akhir-bulan',
@@ -63,6 +75,9 @@ export const projects: Project[] = [
       'Dark navy hero section of Rafly Elektronik with an orange call to action and a photo of appliance shelves.',
     tags: ['Astro', 'Tailwind CSS'],
     year: '2026',
+    category: 'Landing Page',
+    kind: 'High-Performance',
+    accent: 'lime',
     domain: '',
     demo: '#',
     repo: 'https://github.com/raflywirayudha/rafly-elektronik',

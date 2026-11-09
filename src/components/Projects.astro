@@ -8,7 +8,6 @@ const rows = await Promise.all(
   projects.map(async (project, i) => ({
     project,
     index: i + 1,
-    mirrored: i % 2 === 1,
     full: await getImage({
       src: project.image,
       width: Math.min(1600, project.image.width),
@@ -29,53 +28,20 @@ const rows = await Promise.all(
 
 <section
   id="projects"
-  class="relative w-full flex flex-col border-t-[3px] border-outline pb-0 px-margin-mobile md:px-margin-desktop bg-[#4d17ed] text-surface checker-purple"
+  class="relative w-full flex flex-col border-t-[3px] border-outline px-margin-mobile md:px-margin-desktop py-10 md:py-14 bg-[#4d17ed] text-surface checker-purple"
 >
-  <!-- Mobile: satu bidang gradien vertikal untuk header + project 1 -->
-  <div class="relative -mx-margin-mobile md:-mx-margin-desktop">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
-    >
-    </div>
+  <SectionHeader label="projects" title="Selected Works" inverted />
 
-    <!-- Desktop: header ikut bidang gradien project 1 (gelap dari kanan) -->
-    <div class="relative px-margin-mobile md:px-margin-desktop pt-10 pb-6">
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 hidden md:block fade-from-right"
-      >
-      </div>
-      <SectionHeader label="projects" title="Selected Works" inverted />
-    </div>
-
-    <ProjectRow
-      project={rows[0].project}
-      index={rows[0].index}
-      mirrored={rows[0].mirrored}
-      fadeFrom={rows[0].mirrored ? "left" : "right"}
-      bleed={false}
-      mobileFade={false}
-      fullSrc={rows[0].full.src}
-      fullSecondarySrc={rows[0].fullSecondary?.src}
-    />
-  </div>
-
-  <!-- Project 2 dan seterusnya: masing-masing punya gradien mobile sendiri -->
-  <div class="flex flex-col">
+  <div class="mt-6 flex flex-col gap-8 md:mt-8 md:gap-10">
     {
-      rows
-        .slice(1)
-        .map((row) => (
-          <ProjectRow
-            project={row.project}
-            index={row.index}
-            mirrored={row.mirrored}
-            fadeFrom={row.mirrored ? "left" : "right"}
-            fullSrc={row.full.src}
-            fullSecondarySrc={row.fullSecondary?.src}
-          />
-        ))
+      rows.map((row) => (
+        <ProjectRow
+          project={row.project}
+          index={row.index}
+          fullSrc={row.full.src}
+          fullSecondarySrc={row.fullSecondary?.src}
+        />
+      ))
     }
   </div>
 </section>

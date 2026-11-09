@@ -5,237 +5,167 @@ import type { Project } from "../data/projects";
 interface Props {
   project: Project;
   index: number;
-  /** Baris ganjil: gambar pindah ke kanan, teks ke kiri */
-  mirrored?: boolean;
-  /** Sisi gelap gradien — diletakkan di balik teks agar tetap terbaca */
-  fadeFrom?: "left" | "right";
-  /** Baris sudah berada di dalam wrapper full-bleed, jadi tidak perlu negative margin lagi */
-  bleed?: boolean;
-  /** Tampilkan gradien vertikal khusus mobile untuk baris ini */
-  mobileFade?: boolean;
   /** URL gambar ukuran besar untuk lightbox */
   fullSrc: string;
   fullSecondarySrc?: string;
 }
 
-const {
-  project,
-  index,
-  mirrored = false,
-  fadeFrom = "right",
-  bleed = true,
-  mobileFade = true,
-  fullSrc,
-  fullSecondarySrc,
-} = Astro.props;
+const { project, index, fullSrc, fullSecondarySrc } = Astro.props;
 
 const number = String(index).padStart(2, "0");
-const secondaryLeftAligned = mirrored;
+const accentClass =
+  project.accent === "amber" ? "bg-accent-amber" : "bg-accent-lime";
 ---
 
-<article
-  class:list={[
-    "relative flex flex-col gap-8 md:flex-row md:items-center md:gap-12 py-12 md:py-16",
-    bleed
-      ? "-mx-margin-mobile md:-mx-margin-desktop px-margin-mobile md:px-margin-desktop"
-      : "px-margin-mobile md:px-margin-desktop",
-  ]}
->
-  <!-- Gradien vertikal (mobile): tiap project punya bidang sendiri, gelap dari bawah -->
-  {
-    mobileFade && (
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 fade-from-bottom md:hidden"
-      />
-    )
-  }
-
-  <!-- Gradien horizontal per project (desktop) -->
+<article class="relative bg-surface brutal-border brutal-shadow" data-reveal="up">
   <div
-    aria-hidden="true"
-    class:list={[
-      "pointer-events-none absolute inset-0 hidden md:block",
-      fadeFrom === "left" ? "fade-from-left" : "fade-from-right",
-    ]}
+    class="flex flex-col gap-7 p-5 sm:p-7 lg:grid lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-10 lg:p-9"
   >
-  </div>
-
-  <!-- ===== Screenshot ===== -->
-  <div
-    class:list={[
-      "relative z-10 shrink-0 md:w-[57%]",
-      project.secondaryImage && "md:pb-10",
-      mirrored ? "md:order-last" : "",
-    ]}
-    data-reveal="pop"
-  >
-    <button
-      type="button"
-      data-lightbox-src={fullSrc}
-      data-lightbox-alt={project.imageAlt}
-      data-lightbox-title={project.title}
-      data-lightbox-meta={`${project.domain} — ${project.year}`}
-      class:list={[
-        "group relative z-10 block w-full cursor-zoom-in bg-surface text-left brutal-border shadow-[6px_6px_0_0_#ffffff] transition-neobrutal hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary",
-        mirrored ? "-rotate-1" : "rotate-1",
-      ]}
-      aria-label={`Perbesar screenshot ${project.title}`}
-    >
-      <!-- Frame browser palsu — menyatukan semua screenshot -->
-      {
-        !project.hasOwnBrowserChrome && (
-          <div class="flex items-center gap-2 border-b-[3px] border-outline bg-surface px-3 py-2">
-            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-error-container" />
-            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-tertiary-fixed-dim" />
-            <span class="h-3 w-3 rounded-full border-[3px] border-outline bg-primary" />
-            <span class="ml-2 truncate font-label-mono text-[11px] font-bold uppercase text-on-surface-variant">
-              {project.domain}
+    <!-- Kolom kiri: badge + teks. Di mobile wrapper ini dipecah (display: contents)
+         supaya badge, gambar, lalu judul bisa diurutkan ulang. -->
+    <div class="contents min-w-0 lg:flex lg:flex-col lg:gap-4">
+      <!-- Badge baris atas -->
+      <div class="order-1 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span
+          class="bg-primary px-2 py-1 font-label-mono text-[10px] font-bold uppercase tracking-[0.12em] text-on-primary"
+        >
+          Project {number}
+        </span>
+        {
+          project.category && (
+            <span
+              class:list={[
+                accentClass,
+                "border-2 border-outline px-2 py-1 font-label-mono text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface",
+              ]}
+            >
+              {project.category}
             </span>
-          </div>
-        )
-      }
-      <div class="relative overflow-hidden bg-surface-container-high">
-        <Image
-          src={project.image}
-          alt={project.imageAlt}
-          widths={[480, 720, 960, 1280]}
-          sizes="(min-width: 768px) 55vw, 100vw"
-          format="webp"
-          loading="lazy"
-          decoding="async"
-          class="block h-auto w-full"
-        />
-        <!-- <span
-          class="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1 border-[3px] border-outline bg-surface px-2 py-1 font-label-mono text-[11px] font-bold uppercase text-on-surface"
+          )
+        }
+        <span
+          class="flex flex-wrap items-center gap-2 font-label-mono text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant/70"
         >
-          <span class="material-symbols-outlined text-[16px]" aria-hidden="true"
-            >zoom_in</span
-          >
-          Zoomm
-        </span> -->
+          <span>{project.year}</span>
+          {project.kind && <span aria-hidden="true">·</span>}
+          {project.kind && <span>{project.kind}</span>}
+        </span>
       </div>
-    </button>
 
-    <!-- Screenshot kedua (mis. Koki Akhir Bulan: landing + chatbot) -->
-    {
-      project.secondaryImage && fullSecondarySrc && (
-        <div
-          class:list={[
-            "relative z-20 mt-6 md:absolute md:-bottom-2 md:w-[54%]",
-            secondaryLeftAligned ? "md:-left-8" : "md:-right-8",
-            secondaryLeftAligned ? "md:rotate-2" : "md:-rotate-2",
-          ]}
+      <!-- Judul + isi -->
+      <div class="order-3 flex min-w-0 flex-col gap-4">
+        <h3
+          class="text-[28px] font-black uppercase leading-[1.02] tracking-tight text-on-surface sm:text-[34px] lg:text-[44px]"
         >
-          <button
-            type="button"
-            data-lightbox-src={fullSecondarySrc}
-            data-lightbox-alt={project.secondaryImageAlt ?? project.imageAlt}
-            data-lightbox-title={`${project.title} — Detail`}
-            data-lightbox-meta={`${project.domain} — ${project.year}`}
-            class="group block w-full cursor-zoom-in bg-surface text-left brutal-border shadow-[6px_6px_0_0_#ffffff] transition-neobrutal hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary"
-            aria-label={`Perbesar screenshot detail ${project.title}`}
-          >
-            <div class="relative overflow-hidden bg-surface-container-high">
-              <Image
-                src={project.secondaryImage}
-                alt={project.secondaryImageAlt ?? ""}
-                widths={[320, 480, 720]}
-                sizes="(min-width: 768px) 30vw, 100vw"
-                format="webp"
-                loading="lazy"
-                decoding="async"
-                class="block h-auto w-full"
-              />
-              {/* <span class="pointer-events-none absolute bottom-2 right-2 flex items-center justify-center border-[3px] border-outline bg-surface p-1 text-on-surface">
+          {project.title}
+        </h3>
+
+        <p class="max-w-[62ch] text-[14px] leading-relaxed text-on-surface-variant md:text-[15px] lg:text-[16px]">
+          {project.description}
+        </p>
+
+        <div class="mt-1 flex flex-wrap gap-2">
+          {
+            project.tags.map((tag) => (
+              <span class="border-2 border-outline bg-surface px-2 py-1 font-label-mono text-[10px] font-bold uppercase text-on-surface">
+                {tag}
+              </span>
+            ))
+          }
+        </div>
+
+        {
+          project.repo && (
+            <div class="mt-2">
+              <a
+                href={project.repo}
+                target={project.repo === "#" ? undefined : "_blank"}
+                rel="noreferrer"
+                class="inline-flex items-center justify-center gap-2 border-[3px] border-outline bg-primary px-5 py-2.5 font-label-mono text-[11px] font-bold uppercase text-on-primary brutal-shadow-sm transition-neobrutal brutal-hover"
+              >
                 <span
-                  class="material-symbols-outlined text-[16px]"
+                  class="material-symbols-outlined text-[18px]"
                   aria-hidden="true"
                 >
-                  zoom_in
+                  code
                 </span>
-              </span> */}
+                Code
+              </a>
             </div>
-          </button>
-        </div>
-      )
-    }
-  </div>
-
-  <!-- ===== Teks ===== -->
-  <div
-    class="relative z-10 flex flex-1 flex-col gap-5"
-    data-reveal="up"
-    style="--reveal-delay: 120ms"
-  >
-    <div class="flex flex-wrap items-center gap-3">
-      <!-- <span
-        class="font-label-mono text-[13px] font-black uppercase bg-surface text-on-surface px-2 py-1 -rotate-3 shadow-[4px_4px_0_0_#ffffff] border-[3px] border-outline"
-      >
-        &lt;{number}&gt;
-      </span> -->
-      <span
-        class="font-label-mono text-[11px] font-bold uppercase border-[3px] border-white text-surface px-2 py-0.5"
-      >
-        {project.year}
-      </span>
+          )
+        }
+      </div>
     </div>
 
-    <h3
-      class="text-[34px] md:text-[44px] font-black uppercase leading-[0.95] text-surface"
+    <!-- ===== Screenshot ===== -->
+    <div
+      class:list={[
+        "relative order-2 min-w-0 lg:order-none",
+        project.secondaryImage && "lg:pb-10",
+      ]}
+      data-reveal="pop"
+      style="--reveal-delay: 120ms"
     >
-      {project.title}
-    </h3>
+      <button
+        type="button"
+        data-lightbox-src={fullSrc}
+        data-lightbox-alt={project.imageAlt}
+        data-lightbox-title={project.title}
+        data-lightbox-meta={`${project.kind ?? project.category ?? ""} — ${project.year}`}
+        class="group block w-full cursor-zoom-in border-[3px] border-outline bg-surface text-left shadow-[7px_7px_0_0_#000] transition-neobrutal hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#000] focus:outline-none focus-visible:ring-4 focus-visible:ring-primary"
+        aria-label={`Perbesar screenshot ${project.title}`}
+      >
+        <!-- Frame browser palsu — menyatukan semua screenshot -->
+        {
+          !project.hasOwnBrowserChrome && (
+            <div class="flex items-center gap-2 border-b-[3px] border-outline bg-surface px-3 py-2">
+              <span class="h-2.5 w-2.5 rounded-full border-2 border-outline bg-error-container" />
+              <span class="h-2.5 w-2.5 rounded-full border-2 border-outline bg-tertiary-fixed-dim" />
+              <span class="h-2.5 w-2.5 rounded-full border-2 border-outline bg-primary" />
+            </div>
+          )
+        }
+        <div class="relative overflow-hidden bg-surface-container-high">
+          <Image
+            src={project.image}
+            alt={project.imageAlt}
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 1024px) 34vw, 100vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+        </div>
+      </button>
 
-    <p class="text-body-md text-surface/70 max-w-prose">
-      {project.description}
-    </p>
-
-    <div class="flex flex-wrap gap-2">
+      <!-- Screenshot kedua (mis. Koki Akhir Bulan: landing + chatbot) -->
       {
-        project.tags.map((tag) => (
-          <span class="bg-surface text-on-surface border-[3px] border-outline px-2 py-1 font-label-mono text-[11px] font-bold uppercase">
-            {tag}
-          </span>
-        ))
-      }
-    </div>
-
-    <div class="flex flex-wrap gap-4 pt-2">
-      <!-- {
-        project.demo && (
-          <a
-            href={project.demo}
-            target={project.demo === "#" ? undefined : "_blank"}
-            rel="noreferrer"
-            class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary border-[3px] border-outline px-6 py-3 font-label-mono text-label-mono font-bold uppercase transition-neobrutal hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff]"
-          >
-            <span
-              class="material-symbols-outlined text-[18px]"
-              aria-hidden="true"
+        project.secondaryImage && fullSecondarySrc && (
+          <div class="relative z-20 mt-5 w-full lg:absolute lg:-bottom-2 lg:-left-6 lg:mt-0 lg:w-[58%] lg:rotate-2">
+            <button
+              type="button"
+              data-lightbox-src={fullSecondarySrc}
+              data-lightbox-alt={project.secondaryImageAlt ?? project.imageAlt}
+              data-lightbox-title={`${project.title} — Detail`}
+              data-lightbox-meta={`${project.kind ?? project.category ?? ""} — ${project.year}`}
+              class="group block w-full cursor-zoom-in border-[3px] border-outline bg-surface text-left shadow-[7px_7px_0_0_#000] transition-neobrutal hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#000] focus:outline-none focus-visible:ring-4 focus-visible:ring-primary"
+              aria-label={`Perbesar screenshot detail ${project.title}`}
             >
-              visibility
-            </span>
-            Live
-          </a>
-        )
-      } -->
-      {
-        project.repo && (
-          <a
-            href={project.repo}
-            target={project.repo === "#" ? undefined : "_blank"}
-            rel="noreferrer"
-            class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary border-[3px] border-outline px-6 py-3 font-label-mono text-label-mono font-bold uppercase transition-neobrutal hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff]"
-          >
-            <span
-              class="material-symbols-outlined text-[18px]"
-              aria-hidden="true"
-            >
-              code
-            </span>
-            Code
-          </a>
+              <div class="relative overflow-hidden bg-surface-container-high">
+                <Image
+                  src={project.secondaryImage}
+                  alt={project.secondaryImageAlt ?? ""}
+                  widths={[320, 480, 720]}
+                  sizes="(min-width: 1024px) 22vw, 100vw"
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-auto w-full"
+                />
+              </div>
+            </button>
+          </div>
         )
       }
     </div>

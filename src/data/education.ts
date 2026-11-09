@@ -7,6 +7,11 @@ export interface EducationItem {
   period: string;
   school: string;
   major: string;
+  /** Indeks prestasi kumulatif — tampil sebagai badge kuning di kanan kartu */
+  gpa?: string;
+  gpaMax?: string;
+  /** Predikat kelulusan, mis. "Cum Laude" */
+  predicate?: string;
   description?: string;
   highlights?: EducationHighlight[];
   featured?: boolean;
@@ -14,9 +19,12 @@ export interface EducationItem {
 
 export const education: EducationItem[] = [
   {
-    period: '2022 - 2026',
+    period: '2022 — 2026',
     school: 'UIN Sultan Syarif Kasim Riau',
-    major: 'Informatics Engineering',
+    major: 'S1 Teknik Informatika',
+    gpa: '3.70',
+    gpaMax: '4.00',
+    predicate: 'Cum Laude',
     highlights: [
       {
         label: 'Penelitian & Publikasi Ilmiah',
@@ -56,10 +64,8 @@ export const education: EducationItem[] = [
     featured: true,
   },
   {
-    period: '2019 - 2022',
+    period: '2019 — 2022',
     school: 'SMA Negeri 1 Tembilahan',
-    major: 'Science Major',
-    // description:
-    //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius justo sit amet suscipit ultrices. Fusce hendrerit tortor elit. Quisque a arcu hendrerit, hendrerit dolor eget, faucibus erat. Vivamus vitae libero ut purus tempus aliquam eget at ligula.',
+    major: 'Matematika dan Ilmu Pengetahuan Alam (MIPA)',
   },
 ];

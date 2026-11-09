@@ -24,7 +24,7 @@ export interface Certification {
   date: string;
   image: string;
   imageAlt: string;
-  /** Tampil sebagai kartu gambar di marquee; sisanya masuk baris arsip */
+  /** Tampil sebagai kartu gambar di grid 6 teratas; sisanya masuk baris arsip */
   featured?: boolean;
 }
 

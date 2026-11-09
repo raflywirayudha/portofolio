@@ -18,6 +18,12 @@
   --color-on-secondary-container: #000000;
   --color-tertiary-fixed-dim: #cccccc;
   --color-error-container: #ff4444;
+  --color-accent-lime: #a3e635;
+  --color-accent-amber: #f2e6a0;
+  --color-accent-lavender: #f5f3ff;
+  --color-accent-lavender-deep: #ede9fe;
+  --color-accent-yellow: #fef08a;
+  --color-hero-canvas: #faf8ff;
 
   /* ==== Spacing ==== */
   --spacing-margin-desktop: clamp(32px, 9vw, 200px);
@@ -159,6 +165,57 @@
   background-size: 24px 24px;
 }
 
+/* ============================================================
+   Halftone mesh dari code.html — latar Hero
+   Base Hero memakai #FAF8FF (bg-hero-canvas), tanpa blueprint grid
+   agar tidak muncul dua lapisan dot.
+   ============================================================ */
+@utility halftone-top-left {
+  background-image:
+    radial-gradient(#7c3aed 2px, transparent 2px),
+    radial-gradient(#5b21b6 1.2px, transparent 1.2px);
+  background-size: 16px 16px, 32px 32px;
+  background-position: 0 0, 8px 8px;
+  mask-image: radial-gradient(ellipse at 18% 18%,
+      black 25%,
+      rgb(0 0 0 / 0.5) 57%,
+      transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse at 18% 18%,
+      black 25%,
+      rgb(0 0 0 / 0.5) 57%,
+      transparent 90%);
+}
+
+@utility halftone-bottom-right {
+  background-image:
+    radial-gradient(#5b21b6 2.5px, transparent 2.5px),
+    radial-gradient(#facc15 1.5px, transparent 1.5px);
+  background-size: 20px 20px, 40px 40px;
+  background-position: 0 0, 10px 10px;
+  mask-image: radial-gradient(ellipse at 82% 82%,
+      black 29%,
+      rgb(0 0 0 / 0.4) 59%,
+      transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse at 82% 82%,
+      black 29%,
+      rgb(0 0 0 / 0.4) 59%,
+      transparent 90%);
+}
+
+/* Dot grid lavender + garis bantu tipis — latar section Education */
+@utility dot-grid-lavender {
+  background-color: #f8f7ff;
+  background-image:
+    linear-gradient(to right,
+      color-mix(in oklab, var(--color-primary) 7%, transparent) 1px,
+      transparent 1px),
+    linear-gradient(to bottom,
+      color-mix(in oklab, var(--color-primary) 7%, transparent) 1px,
+      transparent 1px),
+    radial-gradient(var(--color-primary) 1px, transparent 1.1px);
+  background-size: 40px 40px, 40px 40px, 20px 20px;
+}
+
 /* Checker diagonal ungu — latar section About */
 @utility checker-purple {
   background-image:
@@ -174,6 +231,23 @@
       var(--color-primary) 75%);
   background-position: 0 0, 10.5px 10.5px;
   background-size: 21px 21px;
+}
+
+/* Checker ungu versi rapat — latar section About (mengikuti screen.png) */
+@utility checker-purple-sm {
+  background-image:
+    linear-gradient(45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%),
+    linear-gradient(45deg,
+      var(--color-primary) 25%,
+      transparent 25%,
+      transparent 75%,
+      var(--color-primary) 75%);
+  background-position: 0 0, 7.5px 7.5px;
+  background-size: 15px 15px;
 }
 
 /* Checker ungu + gradien hitam dari bawah (lantai gelap, checker tetap terlihat di atas) */
@@ -199,39 +273,14 @@
   background-repeat: no-repeat, repeat, repeat;
 }
 
-/* ==== Gradien gelap untuk baris project (Portfolio) ====
-   Sisi gelap diletakkan di balik teks supaya teks putih tetap terbaca.
-   Hitam dibuat dominan di seluruh lebar, checker hanya tersisa samar di ujung. */
-@utility fade-from-right {
-  background-image: linear-gradient(to left,
-      rgb(0 0 0 / 0.96) 0%,
-      rgb(0 0 0 / 0.9) 35%,
-      rgb(0 0 0 / 0.74) 70%,
-      rgb(0 0 0 / 0.2) 100%);
-}
-
-@utility fade-from-left {
-  background-image: linear-gradient(to right,
-      rgb(0 0 0 / 0.96) 0%,
-      rgb(0 0 0 / 0.9) 35%,
-      rgb(0 0 0 / 0.74) 70%,
-      rgb(0 0 0 / 0.2) 100%);
-}
-
-@utility fade-from-bottom {
-  background-image: linear-gradient(to top,
-      rgb(0 0 0 / 0.96) 0%,
-      rgb(0 0 0 / 0.9) 35%,
-      rgb(0 0 0 / 0.74) 70%,
-      rgb(0 0 0 / 0.0) 100%);
-}
-
-/* Garis diagonal halus — alternatif checker yang lebih tenang */
+/* Garis diagonal lavender lembut — latar section Experience */
 @utility diagonal-stripes {
-  background-image: repeating-linear-gradient(45deg,
-      color-mix(in oklab, var(--color-primary) 12%, transparent) 0 12px,
+  background-color: color-mix(in oklab, var(--color-primary) 7%, white);
+  background-image: repeating-linear-gradient(135deg,
+      color-mix(in oklab, var(--color-primary) 12%, white) 0 12px,
       transparent 12px 24px);
 }
+
 /* ==== Scroll reveal (progressive enhancement) ====
    Hanya aktif kalau JS hidup (html.js) dan user tidak meminta reduced motion.
    Tanpa JS / reduced motion: konten tampil normal tanpa animasi. */
@@ -287,6 +336,7 @@
    Animasi memakai properti `translate` supaya tidak menimpa `rotate`/`translate`
    bawaan Tailwind. Amplitudo & tempo diatur lewat custom property per elemen. */
 @keyframes shape-float {
+
   0%,
   100% {
     translate: 0 0;
